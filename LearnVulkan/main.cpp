@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <vector>
+#include <map>
+#include <optional>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -37,6 +39,14 @@ void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT
     }
 }
 
+struct QueueFamilyIndices {
+    std::optional<uint32_t> graphicsFamily;
+
+    bool isComplete() {
+        return graphicsFamily.has_value();
+    }
+};
+
 class HelloTriangleApplication {
 public:
     void run() {
@@ -50,6 +60,8 @@ private:
     GLFWwindow* window;
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+    VkDevice device;
 
     void initWindow() {
         glfwInit();
@@ -63,6 +75,8 @@ private:
     void initVulkan() {
         createInstance();
         setupDebugMessenger();
+        pickPhysicalDevice();
+        createLogicalDevice();
     }
 
     void mainLoop() {
@@ -82,8 +96,6 @@ private:
 
         glfwTerminate();
     }
-
-    
 
     //Connection between application and the Vulkan library.
     //Specifies details about application to driver
@@ -127,6 +139,7 @@ private:
             throw std::runtime_error("Failed to create instance!");
         }
     }
+
 
     std::vector<const char*> getRequiredExtensions() {
         uint32_t glfwExtensionCount = 0;
@@ -198,6 +211,91 @@ private:
 
         return VK_FALSE;
     }
+
+    //Looks for a graphics card and then chooses among them
+    void pickPhysicalDevice() {
+        uint32_t deviceCount = 0;
+        vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+
+        if (deviceCount == 0) {
+            throw std::runtime_error("Failed to find a GPU with Vulkan support!");
+        }
+
+        std::vector<VkPhysicalDevice> devices(deviceCount);
+        vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
+
+        for (const auto& device : devices) {
+            if (isDeviceSuitable(device)) {
+                physicalDevice = device;
+                break;
+            }
+        }
+
+        if (physicalDevice == VK_NULL_HANDLE) {
+            throw std::runtime_error("Failed to find a suitable GPU!");
+        }
+
+        //std::multimap<int, VkPhysicalDevice> candidates;
+
+        //for (const auto& device : devices) {
+        //    int score = rateDeviceSuitability(device);
+        //    candidates.insert(std::make_pair(score, device));
+        //}
+
+        ////Checks if best candidate is suitable at all
+        //if (candidates.rbegin()->first > 0) {
+        //    physicalDevice = candidates.rbegin()->second;
+        //}
+        //else {
+        //    throw std::runtime_error("Failed to find a suitable GPU!");
+        //}
+    }
+
+    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
+        QueueFamilyIndices indices;
+
+        uint32_t queueFamilyCount = 0;
+        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+
+        std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
+
+        int i = 0;
+        for (const auto& queueFamily : queueFamilies) {
+            if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+                indices.graphicsFamily = i;
+            }
+
+            if (indices.isComplete()) {
+                break;
+            }
+
+            i++;
+        }
+        return indices;
+    }
+
+    /*int rateDeviceSuitability(VkPhysicalDevice device) {
+        int score = 0;
+
+        if(device)
+        return score;
+    }*/
+
+    //Checks to see if graphics card can run the program
+    bool isDeviceSuitable(VkPhysicalDevice device) {
+        /* VkPhysicalDeviceProperties deviceProperties;
+         VkPhysicalDeviceFeatures deviceFeatures;
+         vkGetPhysicalDeviceProperties(device, &deviceProperties);
+         vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
+
+         return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && deviceFeatures.geometryShader;*/
+
+        QueueFamilyIndices indices = findQueueFamilies(device);
+
+        return indices.isComplete();
+    }
+
 };
 
 int main() {
