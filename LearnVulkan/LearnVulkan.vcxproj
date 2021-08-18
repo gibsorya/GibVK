@@ -155,7 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainOLD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="compile.bat" />
