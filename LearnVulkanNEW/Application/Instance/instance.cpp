@@ -19,7 +19,7 @@ void VulkanInstance::createInstance() {
 	/*vk::Result result = */
 
 	if (vk::createInstance(&createInfo, nullptr, &instance) != vk::Result::eSuccess) {
-		throw std::runtime_error("Failed to create instance!");
+		throw std::runtime_error("Failed to create instance! :(");
 	}
 }
 
