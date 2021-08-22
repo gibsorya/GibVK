@@ -157,6 +157,8 @@
   <ItemGroup>
     <ClCompile Include="Application\HelloTriangle.cpp" />
     <ClCompile Include="Application\Instance\instance.cpp" />
+    <ClCompile Include="Application\Validation Layers\DebugUtils\DebugUtils.cpp" />
+    <ClCompile Include="Application\Validation Layers\ValidationLayers.cpp" />
     <ClCompile Include="Application\Window\GLFWWindow.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="main.cpp" />
@@ -164,6 +166,8 @@
   <ItemGroup>
     <ClInclude Include="Application\HelloTriangle.h" />
     <ClInclude Include="Application\Instance\instance.h" />
+    <ClInclude Include="Application\Validation Layers\DebugUtils\DebugUtils.h" />
+    <ClInclude Include="Application\Validation Layers\ValidationLayers.h" />
     <ClInclude Include="Application\Window\GLFWWindow.h" />
     <ClInclude Include="engine.h" />
   </ItemGroup>

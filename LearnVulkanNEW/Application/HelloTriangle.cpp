@@ -8,6 +8,7 @@ void HelloTriangle::initWindow() {
 
 void HelloTriangle::initVulkan() {
 	instance.createInstance();
+	debugUtils.setupDebugMessenger();
 	std::cout << "Initialized Vulkan!" << std::endl;
 }
 
@@ -24,7 +25,11 @@ void HelloTriangle::mainLoop() {
 void HelloTriangle::cleanUp() {
 	std::cout << "Cleaning up..." << std::endl;
 
-	instance.getInstance().destroy();
+	if (ValidLayers::enableValidationLayers) {
+		debugUtils.destroyDebugUtilsMessengerEXT(instance.instance, debugUtils.debugMessenger, nullptr);
+	}
+
+	instance.instance.destroy();
 
 	glfwDestroyWindow(window.getWindow());
 	glfwTerminate();
