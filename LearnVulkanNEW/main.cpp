@@ -1,11 +1,19 @@
 #include <iostream>
-#include "engine.h"
+//#include "engine.h"
+#include "Engine/Application.hpp"
+
+class GibVKApp : public gibvk::Application {
+
+};
 
 int main() {
-    VulkanEngine engine;
+    //VulkanEngine engine;
+
+    auto application = std::make_unique<GibVKApp>();
 
     try {
-        engine.run();
+        //engine.run();
+        application->run();
     }
     catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
