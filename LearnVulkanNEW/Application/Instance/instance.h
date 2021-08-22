@@ -3,15 +3,21 @@
 
 #include <vulkan/vulkan.hpp>
 #include <iostream>
+#include <vector>
+#include "../Validation Layers/ValidationLayers.h"
 
 class VulkanInstance {
 public:
 	void createInstance();
 
-	vk::Instance getInstance();
+	//vk::Instance getInstance();
+
+	std::vector<const char*> getRequiredExtensions();
+
+	vk::Instance instance;
 
 private:
-	vk::Instance instance;
+	
 };
 
 #endif

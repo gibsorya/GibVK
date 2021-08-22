@@ -3,6 +3,7 @@
 
 #include "Window/GLFWWindow.h"
 #include "Instance/instance.h"
+#include "Validation Layers/ValidationLayers.h"
 
 class HelloTriangle {
 public:
@@ -17,6 +18,8 @@ public:
 private:
 	VulkanWindow window;
 	VulkanInstance instance;
+	ValidLayers layers;
+	DebugUtils debugUtils;
 };
 
 #endif

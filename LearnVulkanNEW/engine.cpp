@@ -4,10 +4,9 @@
 HelloTriangle application;
 
 void VulkanEngine::run() {
+	std::cout << "Hello World" << std::endl;
 	application.initWindow();
 	application.initVulkan();
 	application.mainLoop();
 	application.cleanUp();
-
-	std::cout << "Hello World" << std::endl;
 }
