@@ -20,7 +20,8 @@ namespace gibvk::graphics {
 		constexpr auto windowTitle = "Vulkan Window";
 
 		window = vulkan::create(WIDTH, HEIGHT, windowTitle);
-		instance = vulkan::create();
+		instance = vulkan::createInstance();
+		debugMessenger = vulkan::debugutils::setupDebugMessenger();
 
 	}
 
@@ -33,6 +34,9 @@ namespace gibvk::graphics {
 
 	void Graphics::cleanup()
 	{
+		if (vulkan::enableValidationLayers) {
+			vulkan::debugutils::DestroyDebugUtilsMessengerEXT(instance->getInstance(), debugMessenger->getDebugMessenger(), nullptr);
+		}
 		instance->getInstance().destroy();
 
 		glfwDestroyWindow(window->getWindow());
@@ -55,6 +59,15 @@ namespace gibvk::graphics {
 		}
 
 		return *instance;
+	}
+
+	const vulkan::debugutils::DebugUtils& Graphics::getDebugMessenger() const
+	{
+		if (debugMessenger == nullptr) {
+			throw std::runtime_error("Debug Messenger has not been initalized");
+		}
+
+		return *debugMessenger;
 	}
 
 	Graphics* get()
