@@ -158,6 +158,8 @@
     <ClCompile Include="Engine\Application.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Graphics.cpp" />
+    <ClCompile Include="Engine\Vulkan\Devices\PhysicalDevices.cpp" />
+    <ClCompile Include="Engine\Vulkan\Devices\QueueFamilies.cpp" />
     <ClCompile Include="Engine\Vulkan\Instance.cpp" />
     <ClCompile Include="Engine\Vulkan\ValidationLayers\DebugUtils.cpp" />
     <ClCompile Include="Engine\Vulkan\ValidationLayers\ValidLayers.cpp" />
@@ -168,6 +170,8 @@
     <ClInclude Include="Engine\Application.hpp" />
     <ClInclude Include="Engine\Engine.hpp" />
     <ClInclude Include="Engine\Graphics.hpp" />
+    <ClInclude Include="Engine\Vulkan\Devices\PhysicalDevices.hpp" />
+    <ClInclude Include="Engine\Vulkan\Devices\QueueFamilies.hpp" />
     <ClInclude Include="Engine\Vulkan\Instance.hpp" />
     <ClInclude Include="Engine\Vulkan\ValidationLayers\DebugUtils.hpp" />
     <ClInclude Include="Engine\Vulkan\ValidationLayers\ValidLayers.hpp" />
