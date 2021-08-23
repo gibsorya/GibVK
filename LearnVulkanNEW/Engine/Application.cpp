@@ -4,6 +4,7 @@
 namespace gibvk {
 	Application::Application()
 	{
+		//Here to maybe do something in the future
 	}
 
 	void Application::run()
