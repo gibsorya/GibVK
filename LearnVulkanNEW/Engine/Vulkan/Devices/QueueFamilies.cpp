@@ -1,4 +1,5 @@
 #include "QueueFamilies.hpp"
+#include "../../Graphics.hpp"
 
 namespace gibvk::vulkan::devices {
 	QueueFamilyIndices QueueFamilies::findQueueFamilies(vk::PhysicalDevice device)
@@ -15,6 +16,13 @@ namespace gibvk::vulkan::devices {
 		for (const auto& queueFamily : queueFamilies) {
 			if (queueFamily.queueFlags & vk::QueueFlagBits::eGraphics) {
 				indices.graphicsFamily = i;
+			}
+
+			vk::Bool32 presentSupport = false;
+			device.getSurfaceSupportKHR(i, graphics::get()->getSurface().getSurface(), &presentSupport);
+
+			if (presentSupport) {
+				indices.presentFamily = i;
 			}
 
 			if (indices.isComplete()) {

@@ -22,8 +22,10 @@ namespace gibvk::graphics {
 		window = vulkan::create(WIDTH, HEIGHT, windowTitle);
 		instance = vulkan::createInstance();
 		debugMessenger = vulkan::debugutils::setupDebugMessenger();
+		surface = vulkan::createSurface();
 		physicalDevice = vulkan::devices::pickPhysicalDevice();
 		graphicsQueue = vulkan::queues::createGraphicsQueue();
+		presentQueue = vulkan::queues::createPresentQueue();
 		logicalDevice = vulkan::devices::createLogicalDevice();
 	}
 
@@ -41,6 +43,8 @@ namespace gibvk::graphics {
 		if (vulkan::enableValidationLayers) {
 			vulkan::debugutils::DestroyDebugUtilsMessengerEXT(instance->getInstance(), debugMessenger->getDebugMessenger(), nullptr);
 		}
+		
+		vkDestroySurfaceKHR(instance->getInstance(), surface->getSurface(), nullptr);
 		instance->getInstance().destroy();
 
 		glfwDestroyWindow(window->getWindow());
@@ -63,6 +67,15 @@ namespace gibvk::graphics {
 		}
 
 		return *instance;
+	}
+
+	const vulkan::Surface& Graphics::getSurface() const
+	{
+		if (surface == nullptr) {
+			throw std::runtime_error("Surface has not been initalized");
+		}
+
+		return *surface;
 	}
 
 	const vulkan::debugutils::DebugUtils& Graphics::getDebugMessenger() const
@@ -99,6 +112,15 @@ namespace gibvk::graphics {
 		}
 
 		return *graphicsQueue;
+	}
+
+	const vulkan::queues::PresentQueue& Graphics::getPresentQueue() const
+	{
+		if (presentQueue == nullptr) {
+			throw std::runtime_error("Present queue has not been initialized");
+		}
+
+		return *presentQueue;
 	}
 
 	Graphics* get()
