@@ -1,6 +1,6 @@
 #include "LogicalDevices.hpp"
 #include "../../Graphics.hpp"
-
+#include <set>
 namespace gibvk::vulkan::devices {
 	LogicalDevices::LogicalDevices()
 	{
@@ -8,11 +8,17 @@ namespace gibvk::vulkan::devices {
 
 		QueueFamilyIndices indices = devices::QueueFamilies::findQueueFamilies(graphics::get()->getPhysicalDevice().getPhysicalDevice());
 
-		vk::DeviceQueueCreateInfo queueCreateInfo({}, indices.graphicsFamily.value(), 1, &queuePriority);
+		std::vector<vk::DeviceQueueCreateInfo> queueCreateInfos;
+		std::set<uint32_t> uniqueQueueFamiles = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 
+		for (uint32_t queueFamily : uniqueQueueFamiles) {
+			vk::DeviceQueueCreateInfo queueCreateInfo({}, queueFamily, 1, &queuePriority);
+			queueCreateInfos.push_back(queueCreateInfo);
+		}
+		
 		vk::PhysicalDeviceFeatures deviceFeatures{};
 
-		vk::DeviceCreateInfo createInfo({}, 1, &queueCreateInfo, 0, nullptr, 0, nullptr, &deviceFeatures);
+		vk::DeviceCreateInfo createInfo({}, static_cast<uint32_t>(queueCreateInfos.size()), queueCreateInfos.data(), 0, nullptr, 0, nullptr, &deviceFeatures);
 
 		if (enableValidationLayers) {
 			createInfo.enabledLayerCount = static_cast<uint32_t>(vulkan::validlayers::validationLayers.size());
@@ -23,8 +29,8 @@ namespace gibvk::vulkan::devices {
 			throw std::runtime_error("Failed to create logical device!");
 		}
 
-		//vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, reinterpret_cast<VkQueue>(*graphics::get()->getGraphicsQueue().getGraphicsQueue()));
 		vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, const_cast<VkQueue*>(reinterpret_cast<const VkQueue*>(&graphics::get()->getGraphicsQueue().getGraphicsQueue())));
+		vkGetDeviceQueue(device, indices.presentFamily.value(), 0, const_cast<VkQueue*>(reinterpret_cast<const VkQueue*>(&graphics::get()->getPresentQueue().getPresentQueue())));
 	}	
 
 	const vk::Device& LogicalDevices::getLogicalDevice() const
