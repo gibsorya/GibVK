@@ -9,11 +9,9 @@ namespace gibvk::vulkan::devices {
 		LogicalDevices();
 
 		[[nodiscard]] const vk::Device& getLogicalDevice() const;
-		[[nodiscard]] const vk::Queue& getGraphicsQueue() const;
 
 	private:
 		vk::Device device;
-		vk::Queue graphicsQueue;
 	};
 
 	std::unique_ptr<LogicalDevices> createLogicalDevice();

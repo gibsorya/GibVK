@@ -11,6 +11,7 @@
 #include "Vulkan/Devices/LogicalDevices.hpp"
 #include "Vulkan/Queues/GraphicsQueue.hpp"
 #include "Vulkan/Queues/PresentQueue.hpp"
+#include "Vulkan/Swapchains/Swapchain.hpp"
 #include "Application.hpp"
 
 #include <memory>
@@ -34,6 +35,7 @@ namespace gibvk::graphics {
 		[[nodiscard]] const vulkan::devices::LogicalDevices& getLogicalDevice() const;
 		[[nodiscard]] const vulkan::queues::GraphicsQueue& getGraphicsQueue() const;
 		[[nodiscard]] const vulkan::queues::PresentQueue& getPresentQueue() const;
+		[[nodiscard]] const vulkan::swapchains::Swapchain& getSwapchain() const;
 
 	private:
 		static std::unique_ptr<Graphics> graphics;
@@ -46,6 +48,7 @@ namespace gibvk::graphics {
 		std::unique_ptr<vulkan::devices::LogicalDevices> logicalDevice{};
 		std::unique_ptr<vulkan::queues::GraphicsQueue> graphicsQueue{};
 		std::unique_ptr<vulkan::queues::PresentQueue> presentQueue{};
+		std::unique_ptr<vulkan::swapchains::Swapchain> swapchain{};
 	};
 
 	Graphics *get();

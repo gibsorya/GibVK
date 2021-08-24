@@ -1,6 +1,7 @@
 #include "LogicalDevices.hpp"
 #include "../../Graphics.hpp"
 #include <set>
+
 namespace gibvk::vulkan::devices {
 	LogicalDevices::LogicalDevices()
 	{
@@ -18,8 +19,8 @@ namespace gibvk::vulkan::devices {
 		
 		vk::PhysicalDeviceFeatures deviceFeatures{};
 
-		vk::DeviceCreateInfo createInfo({}, static_cast<uint32_t>(queueCreateInfos.size()), queueCreateInfos.data(), 0, nullptr, 0, nullptr, &deviceFeatures);
-
+		vk::DeviceCreateInfo createInfo({}, static_cast<uint32_t>(queueCreateInfos.size()), queueCreateInfos.data(), 0, nullptr, static_cast<uint32_t>(swapchains::deviceExtensions.size()), swapchains::deviceExtensions.data(), &deviceFeatures);
+		
 		if (enableValidationLayers) {
 			createInfo.enabledLayerCount = static_cast<uint32_t>(vulkan::validlayers::validationLayers.size());
 			createInfo.ppEnabledLayerNames = vulkan::validlayers::validationLayers.data();
@@ -36,11 +37,6 @@ namespace gibvk::vulkan::devices {
 	const vk::Device& LogicalDevices::getLogicalDevice() const
 	{
 		return device;
-	}
-
-	const vk::Queue& LogicalDevices::getGraphicsQueue() const
-	{
-		return graphicsQueue;
 	}
 
 	std::unique_ptr<LogicalDevices> createLogicalDevice()
