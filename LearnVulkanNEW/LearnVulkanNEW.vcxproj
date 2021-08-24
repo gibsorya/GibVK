@@ -165,6 +165,7 @@
     <ClCompile Include="Engine\Vulkan\Queues\GraphicsQueue.cpp" />
     <ClCompile Include="Engine\Vulkan\Queues\PresentQueue.cpp" />
     <ClCompile Include="Engine\Vulkan\Surface.cpp" />
+    <ClCompile Include="Engine\Vulkan\Swapchains\ImageViews.cpp" />
     <ClCompile Include="Engine\Vulkan\Swapchains\Swapchain.cpp" />
     <ClCompile Include="Engine\Vulkan\ValidationLayers\DebugUtils.cpp" />
     <ClCompile Include="Engine\Vulkan\ValidationLayers\ValidLayers.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Engine\Vulkan\Queues\GraphicsQueue.hpp" />
     <ClInclude Include="Engine\Vulkan\Queues\PresentQueue.hpp" />
     <ClInclude Include="Engine\Vulkan\Surface.hpp" />
+    <ClInclude Include="Engine\Vulkan\Swapchains\ImageViews.hpp" />
     <ClInclude Include="Engine\Vulkan\Swapchains\Swapchain.hpp" />
     <ClInclude Include="Engine\Vulkan\ValidationLayers\DebugUtils.hpp" />
     <ClInclude Include="Engine\Vulkan\ValidationLayers\ValidLayers.hpp" />

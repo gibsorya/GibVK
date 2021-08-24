@@ -12,6 +12,7 @@
 #include "Vulkan/Queues/GraphicsQueue.hpp"
 #include "Vulkan/Queues/PresentQueue.hpp"
 #include "Vulkan/Swapchains/Swapchain.hpp"
+#include "Vulkan/Swapchains/ImageViews.hpp"
 #include "Application.hpp"
 
 #include <memory>
@@ -36,6 +37,7 @@ namespace gibvk::graphics {
 		[[nodiscard]] const vulkan::queues::GraphicsQueue& getGraphicsQueue() const;
 		[[nodiscard]] const vulkan::queues::PresentQueue& getPresentQueue() const;
 		[[nodiscard]] const vulkan::swapchains::Swapchain& getSwapchain() const;
+		[[nodiscard]] const vulkan::swapchains::ImageViews& getImageViews() const;
 
 	private:
 		static std::unique_ptr<Graphics> graphics;
@@ -49,6 +51,7 @@ namespace gibvk::graphics {
 		std::unique_ptr<vulkan::queues::GraphicsQueue> graphicsQueue{};
 		std::unique_ptr<vulkan::queues::PresentQueue> presentQueue{};
 		std::unique_ptr<vulkan::swapchains::Swapchain> swapchain{};
+		std::unique_ptr<vulkan::swapchains::ImageViews> imageViews{};
 	};
 
 	Graphics *get();
