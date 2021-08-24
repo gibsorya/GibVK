@@ -23,7 +23,8 @@ namespace gibvk::graphics {
 		instance = vulkan::createInstance();
 		debugMessenger = vulkan::debugutils::setupDebugMessenger();
 		physicalDevice = vulkan::devices::pickPhysicalDevice();
-
+		graphicsQueue = vulkan::queues::createGraphicsQueue();
+		logicalDevice = vulkan::devices::createLogicalDevice();
 	}
 
 	void Graphics::render()
@@ -35,6 +36,8 @@ namespace gibvk::graphics {
 
 	void Graphics::cleanup()
 	{
+		logicalDevice->getLogicalDevice().destroy();
+
 		if (vulkan::enableValidationLayers) {
 			vulkan::debugutils::DestroyDebugUtilsMessengerEXT(instance->getInstance(), debugMessenger->getDebugMessenger(), nullptr);
 		}
@@ -78,6 +81,24 @@ namespace gibvk::graphics {
 		}
 
 		return *physicalDevice;
+	}
+
+	const vulkan::devices::LogicalDevices& Graphics::getLogicalDevice() const
+	{
+		if (logicalDevice == nullptr) {
+			throw std::runtime_error("Logical Device has not been initalized");
+		}
+
+		return *logicalDevice;
+	}
+
+	const vulkan::queues::GraphicsQueue& Graphics::getGraphicsQueue() const
+	{
+		if (graphicsQueue == nullptr) {
+			throw std::runtime_error("Graphics queue has not been initalized");
+		}
+
+		return *graphicsQueue;
 	}
 
 	Graphics* get()

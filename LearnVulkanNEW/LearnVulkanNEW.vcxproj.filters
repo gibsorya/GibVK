@@ -45,6 +45,12 @@
     <ClCompile Include="Engine\Vulkan\Devices\QueueFamilies.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Vulkan\Devices\LogicalDevices.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Vulkan\Queues\GraphicsQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.hpp">
@@ -72,6 +78,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Vulkan\Devices\QueueFamilies.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Vulkan\Devices\LogicalDevices.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Vulkan\Queues\GraphicsQueue.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
