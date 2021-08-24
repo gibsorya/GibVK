@@ -31,7 +31,32 @@ namespace gibvk::vulkan::devices {
 	{
 		QueueFamilyIndices indices = devices::QueueFamilies::findQueueFamilies(device);
 
-		return indices.isComplete();
+		bool extensionsSupported = checkDeviceExtensionSupport(device);
+
+		bool swapchainAdequate = false;
+		if (extensionsSupported) {
+			swapchains::SwapchainSupportDetails swapchainSupport = swapchains::Swapchain::querySwapchainSupport(device);
+			swapchainAdequate = !swapchainSupport.formats.empty() && !swapchainSupport.presentModes.empty();
+		}
+
+		return indices.isComplete() && extensionsSupported && swapchainAdequate;
+	}
+
+	bool PhysicalDevices::checkDeviceExtensionSupport(vk::PhysicalDevice device)
+	{
+		uint32_t extensionCount;
+		device.enumerateDeviceExtensionProperties(nullptr, &extensionCount, nullptr);
+
+		std::vector<vk::ExtensionProperties> availableExtensions(extensionCount);
+		device.enumerateDeviceExtensionProperties(nullptr, &extensionCount, availableExtensions.data());
+
+		std::set<std::string> requiredExtensions(swapchains::deviceExtensions.begin(), swapchains::deviceExtensions.end());
+
+		for (const auto& extension : availableExtensions) {
+			requiredExtensions.erase(extension.extensionName);
+		}
+
+		return requiredExtensions.empty();
 	}
 
 	const vk::PhysicalDevice& PhysicalDevices::getPhysicalDevice() const

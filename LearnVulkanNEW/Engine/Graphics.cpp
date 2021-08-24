@@ -27,6 +27,7 @@ namespace gibvk::graphics {
 		graphicsQueue = vulkan::queues::createGraphicsQueue();
 		presentQueue = vulkan::queues::createPresentQueue();
 		logicalDevice = vulkan::devices::createLogicalDevice();
+		swapchain = vulkan::swapchains::createSwapchain();
 	}
 
 	void Graphics::render()
@@ -38,6 +39,7 @@ namespace gibvk::graphics {
 
 	void Graphics::cleanup()
 	{
+		vkDestroySwapchainKHR(logicalDevice->getLogicalDevice(), swapchain->getSwapchain(), nullptr);
 		logicalDevice->getLogicalDevice().destroy();
 
 		if (vulkan::enableValidationLayers) {
@@ -121,6 +123,15 @@ namespace gibvk::graphics {
 		}
 
 		return *presentQueue;
+	}
+
+	const vulkan::swapchains::Swapchain& Graphics::getSwapchain() const
+	{
+		if (swapchain == nullptr) {
+			throw std::runtime_error("Swapchain has not been initalized");
+		}
+
+		return *swapchain;
 	}
 
 	Graphics* get()

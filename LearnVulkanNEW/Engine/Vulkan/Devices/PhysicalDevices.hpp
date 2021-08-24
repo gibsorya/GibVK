@@ -3,6 +3,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include <vector>
+#include <set>
 
 namespace gibvk::vulkan::devices {
 	class PhysicalDevices {
@@ -10,6 +11,8 @@ namespace gibvk::vulkan::devices {
 		PhysicalDevices();
 
 		bool isDeviceSuitable(vk::PhysicalDevice device);
+
+		bool checkDeviceExtensionSupport(vk::PhysicalDevice device);
 
 		[[nodiscard]] const vk::PhysicalDevice& getPhysicalDevice() const;
 
