@@ -22,7 +22,6 @@ namespace gibvk::graphics {
 		window = vulkan::create(WIDTH, HEIGHT, windowTitle);
 		instance = vulkan::createInstance();
 		debugMessenger = vulkan::debugutils::setupDebugMessenger();
-		//device = std::make_unique<gibvk::vulkan::devices::Devices>(true);
 		physicalDevice = vulkan::devices::pickPhysicalDevice();
 
 	}
@@ -71,15 +70,6 @@ namespace gibvk::graphics {
 
 		return *debugMessenger;
 	}
-
-	//const vulkan::devices::Devices& Graphics::getDevices() const
-	//{
-	//	if (device == nullptr) {
-	//		throw std::runtime_error("Device has not been initalized");
-	//	}
-
-	//	return *device;
-	//}
 
 	const vulkan::devices::PhysicalDevices& Graphics::getPhysicalDevice() const
 	{
