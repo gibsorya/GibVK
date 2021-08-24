@@ -28,6 +28,7 @@ namespace gibvk::graphics {
 		presentQueue = vulkan::queues::createPresentQueue();
 		logicalDevice = vulkan::devices::createLogicalDevice();
 		swapchain = vulkan::swapchains::createSwapchain();
+		imageViews = vulkan::swapchains::createImageViews();
 	}
 
 	void Graphics::render()
@@ -39,6 +40,10 @@ namespace gibvk::graphics {
 
 	void Graphics::cleanup()
 	{
+		for (auto imageView : imageViews->getSwapchainImageViews()) {
+			vkDestroyImageView(logicalDevice->getLogicalDevice(), imageView, nullptr);
+		}
+
 		vkDestroySwapchainKHR(logicalDevice->getLogicalDevice(), swapchain->getSwapchain(), nullptr);
 		logicalDevice->getLogicalDevice().destroy();
 
@@ -132,6 +137,15 @@ namespace gibvk::graphics {
 		}
 
 		return *swapchain;
+	}
+
+	const vulkan::swapchains::ImageViews& Graphics::getImageViews() const
+	{
+		if (imageViews == nullptr) {
+			throw std::runtime_error("Image Views have not been initalized");
+		}
+
+		return *imageViews;
 	}
 
 	Graphics* get()
