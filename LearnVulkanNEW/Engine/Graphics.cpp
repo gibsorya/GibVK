@@ -29,6 +29,7 @@ namespace gibvk::graphics {
 		logicalDevice = vulkan::devices::createLogicalDevice();
 		swapchain = vulkan::swapchains::createSwapchain();
 		imageViews = vulkan::swapchains::createImageViews();
+		vulkan::pipelines::get()->initialize();
 	}
 
 	void Graphics::render()
@@ -41,17 +42,17 @@ namespace gibvk::graphics {
 	void Graphics::cleanup()
 	{
 		for (auto imageView : imageViews->getSwapchainImageViews()) {
-			vkDestroyImageView(logicalDevice->getLogicalDevice(), imageView, nullptr);
+			logicalDevice->getLogicalDevice().destroy(imageView);
 		}
 
-		vkDestroySwapchainKHR(logicalDevice->getLogicalDevice(), swapchain->getSwapchain(), nullptr);
+		logicalDevice->getLogicalDevice().destroy(swapchain->getSwapchain());
 		logicalDevice->getLogicalDevice().destroy();
 
 		if (vulkan::enableValidationLayers) {
 			vulkan::debugutils::DestroyDebugUtilsMessengerEXT(instance->getInstance(), debugMessenger->getDebugMessenger(), nullptr);
 		}
 		
-		vkDestroySurfaceKHR(instance->getInstance(), surface->getSurface(), nullptr);
+		instance->getInstance().destroy(surface->getSurface());
 		instance->getInstance().destroy();
 
 		glfwDestroyWindow(window->getWindow());

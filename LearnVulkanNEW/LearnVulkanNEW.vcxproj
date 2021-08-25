@@ -161,6 +161,8 @@
     <ClCompile Include="Engine\Vulkan\Devices\LogicalDevices.cpp" />
     <ClCompile Include="Engine\Vulkan\Devices\PhysicalDevices.cpp" />
     <ClCompile Include="Engine\Vulkan\Devices\QueueFamilies.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\MainGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\ShaderModules\ShaderModule.cpp" />
     <ClCompile Include="Engine\Vulkan\Instance.cpp" />
     <ClCompile Include="Engine\Vulkan\Queues\GraphicsQueue.cpp" />
     <ClCompile Include="Engine\Vulkan\Queues\PresentQueue.cpp" />
@@ -179,6 +181,8 @@
     <ClInclude Include="Engine\Vulkan\Devices\LogicalDevices.hpp" />
     <ClInclude Include="Engine\Vulkan\Devices\PhysicalDevices.hpp" />
     <ClInclude Include="Engine\Vulkan\Devices\QueueFamilies.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\MainGraphicsPipeline.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\ShaderModules\ShaderModule.hpp" />
     <ClInclude Include="Engine\Vulkan\Instance.hpp" />
     <ClInclude Include="Engine\Vulkan\Queues\GraphicsQueue.hpp" />
     <ClInclude Include="Engine\Vulkan\Queues\PresentQueue.hpp" />
@@ -188,6 +192,11 @@
     <ClInclude Include="Engine\Vulkan\ValidationLayers\DebugUtils.hpp" />
     <ClInclude Include="Engine\Vulkan\ValidationLayers\ValidLayers.hpp" />
     <ClInclude Include="Engine\Vulkan\Window.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="compile.bat" />
+    <None Include="shaders\shader.frag" />
+    <None Include="shaders\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

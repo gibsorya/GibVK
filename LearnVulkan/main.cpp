@@ -1,8 +1,6 @@
 /*
 
 This file was good for learning but needs to be broken into smaller chunks.
-Named file mainOLD to indicate that this is the old version of the HelloTriangle application.
-
 
 */
 

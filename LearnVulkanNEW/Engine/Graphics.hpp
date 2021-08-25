@@ -13,6 +13,7 @@
 #include "Vulkan/Queues/PresentQueue.hpp"
 #include "Vulkan/Swapchains/Swapchain.hpp"
 #include "Vulkan/Swapchains/ImageViews.hpp"
+#include "Vulkan/GraphicsPipelines/MainGraphicsPipeline.hpp"
 #include "Application.hpp"
 
 #include <memory>

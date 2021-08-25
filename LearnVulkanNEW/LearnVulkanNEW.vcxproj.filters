@@ -63,6 +63,12 @@
     <ClCompile Include="Engine\Vulkan\Swapchains\ImageViews.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\MainGraphicsPipeline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\ShaderModules\ShaderModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.hpp">
@@ -110,5 +116,18 @@
     <ClInclude Include="Engine\Vulkan\Swapchains\ImageViews.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\MainGraphicsPipeline.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\ShaderModules\ShaderModule.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\shader.vert" />
+    <None Include="shaders\shader.frag" />
+    <None Include="compile.bat">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
