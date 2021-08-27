@@ -5,7 +5,7 @@ namespace gibvk::vulkan::pipelines::viewports {
 	Viewport::Viewport()
 	{
 		viewport = vk::Viewport(0.0f, 0.0f, (float)gibvk::graphics::get()->getSwapchain().getSwapchainExtent().width, 
-			gibvk::graphics::get()->getSwapchain().getSwapchainExtent().height, 0.0f, 1.0f);			
+			(float)gibvk::graphics::get()->getSwapchain().getSwapchainExtent().height, 0.0f, 1.0f);
 	}
 
 	const vk::Viewport& Viewport::getViewport() const
