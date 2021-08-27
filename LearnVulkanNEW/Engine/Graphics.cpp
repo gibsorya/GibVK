@@ -29,30 +29,57 @@ namespace gibvk::graphics {
 		logicalDevice = vulkan::devices::createLogicalDevice();
 		swapchain = vulkan::swapchains::createSwapchain();
 		imageViews = vulkan::swapchains::createImageViews();
+		renderPass = vulkan::renderpasses::createRenderPass();
 		vulkan::pipelines::get()->initialize();
+		vulkan::drawing::get()->initialize();
 	}
 
 	void Graphics::render()
 	{
 		while (!glfwWindowShouldClose(window->getWindow())) {
 			glfwPollEvents();
+			drawFrame();
 		}
+
+		logicalDevice->getLogicalDevice().waitIdle();
+	}
+
+	void Graphics::drawFrame()
+	{
+		vulkan::drawing::get()->draw();
 	}
 
 	void Graphics::cleanup()
 	{
-		for (auto imageView : imageViews->getSwapchainImageViews()) {
-			logicalDevice->getLogicalDevice().destroy(imageView);
+		for (size_t i = 0; i < vulkan::drawing::MAX_FRAMES_IN_FLIGHT; i++) {
+			logicalDevice->getLogicalDevice().destroySemaphore(vulkan::drawing::get()->getRenderFinishedSemaphore().at(i));
+			logicalDevice->getLogicalDevice().destroySemaphore(vulkan::drawing::get()->getImageAvailabeSemaphore().at(i));
+			logicalDevice->getLogicalDevice().destroyFence(vulkan::drawing::get()->getInFlightFences().at(i));
 		}
 
-		logicalDevice->getLogicalDevice().destroy(swapchain->getSwapchain());
+		logicalDevice->getLogicalDevice().destroyCommandPool(vulkan::drawing::get()->getCommandPool().getCommandPool());
+	
+
+		for (auto framebuffer : vulkan::drawing::get()->getFramebuffer().getSwapchainFramebuffers()) {
+			logicalDevice->getLogicalDevice().destroyFramebuffer(framebuffer);
+		}
+
+		logicalDevice->getLogicalDevice().destroyPipeline(vulkan::pipelines::get()->getGraphicsPipeline());
+		logicalDevice->getLogicalDevice().destroyPipelineLayout(vulkan::pipelines::get()->getPipelineLayout());
+		logicalDevice->getLogicalDevice().destroyRenderPass(renderPass->getRenderPass());
+
+		for (auto imageView : imageViews->getSwapchainImageViews()) {
+			logicalDevice->getLogicalDevice().destroyImageView(imageView);
+		}
+
+		logicalDevice->getLogicalDevice().destroySwapchainKHR(swapchain->getSwapchain());
 		logicalDevice->getLogicalDevice().destroy();
 
 		if (vulkan::enableValidationLayers) {
 			vulkan::debugutils::DestroyDebugUtilsMessengerEXT(instance->getInstance(), debugMessenger->getDebugMessenger(), nullptr);
 		}
 		
-		instance->getInstance().destroy(surface->getSurface());
+		instance->getInstance().destroySurfaceKHR(surface->getSurface());
 		instance->getInstance().destroy();
 
 		glfwDestroyWindow(window->getWindow());
@@ -147,6 +174,15 @@ namespace gibvk::graphics {
 		}
 
 		return *imageViews;
+	}
+
+	const vulkan::renderpasses::RenderPass& Graphics::getRenderPass() const
+	{
+		if (renderPass == nullptr) {
+			throw std::runtime_error("Render Pass has not been initialized");
+		}
+
+		return *renderPass;
 	}
 
 	Graphics* get()
