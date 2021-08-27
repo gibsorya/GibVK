@@ -21,10 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{96156c24-ad00-49bb-9c36-1c1b31f1f004}</ProjectGuid>
-    <RootNamespace>LearnVulkan</RootNamespace>
+    <ProjectGuid>{de38cf08-9a6c-422c-bc61-981f0648a739}</ProjectGuid>
+    <RootNamespace>GibVK</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>LearnVulkanOLD</ProjectName>
+    <ProjectName>GibVK</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -89,14 +89,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.2.182.0\Include;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;C:\VulkanSDK\1.2.182.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -107,8 +107,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.2.182.0\Include;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,7 +116,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;C:\VulkanSDK\1.2.182.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -125,14 +125,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.2.182.0\Include;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;C:\VulkanSDK\1.2.182.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,8 +143,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.2.182.0\Include;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,11 +152,71 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;C:\VulkanSDK\1.2.182.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Application.cpp" />
+    <ClCompile Include="Engine\Engine.cpp" />
+    <ClCompile Include="Engine\Graphics.cpp" />
+    <ClCompile Include="Engine\Vulkan\Devices\LogicalDevices.cpp" />
+    <ClCompile Include="Engine\Vulkan\Devices\PhysicalDevices.cpp" />
+    <ClCompile Include="Engine\Vulkan\Devices\QueueFamilies.cpp" />
+    <ClCompile Include="Engine\Vulkan\Drawing\CommandBuffers\CommandBuffer.cpp" />
+    <ClCompile Include="Engine\Vulkan\Drawing\CommandPools\CommandPool.cpp" />
+    <ClCompile Include="Engine\Vulkan\Drawing\Drawing.cpp" />
+    <ClCompile Include="Engine\Vulkan\Drawing\Framebuffers\Framebuffer.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\ColorBlenders\ColorBlend.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\InputAssemblies\InputAssembly.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\MainGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\Multisamplers\Multisampling.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\Rasterizers\Rasterizer.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\Scissors\Scissor.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\ShaderModules\ShaderModule.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\VertexInputs\VertexInput.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\Viewports\Viewport.cpp" />
+    <ClCompile Include="Engine\Vulkan\Instance.cpp" />
+    <ClCompile Include="Engine\Vulkan\Queues\GraphicsQueue.cpp" />
+    <ClCompile Include="Engine\Vulkan\Queues\PresentQueue.cpp" />
+    <ClCompile Include="Engine\Vulkan\RenderPasses\RenderPass.cpp" />
+    <ClCompile Include="Engine\Vulkan\Surface.cpp" />
+    <ClCompile Include="Engine\Vulkan\Swapchains\ImageViews.cpp" />
+    <ClCompile Include="Engine\Vulkan\Swapchains\Swapchain.cpp" />
+    <ClCompile Include="Engine\Vulkan\ValidationLayers\DebugUtils.cpp" />
+    <ClCompile Include="Engine\Vulkan\ValidationLayers\ValidLayers.cpp" />
+    <ClCompile Include="Engine\Vulkan\Window.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\Application.hpp" />
+    <ClInclude Include="Engine\Engine.hpp" />
+    <ClInclude Include="Engine\Graphics.hpp" />
+    <ClInclude Include="Engine\Vulkan\Devices\LogicalDevices.hpp" />
+    <ClInclude Include="Engine\Vulkan\Devices\PhysicalDevices.hpp" />
+    <ClInclude Include="Engine\Vulkan\Devices\QueueFamilies.hpp" />
+    <ClInclude Include="Engine\Vulkan\Drawing\CommandBuffers\CommandBuffer.hpp" />
+    <ClInclude Include="Engine\Vulkan\Drawing\CommandPools\CommandPool.hpp" />
+    <ClInclude Include="Engine\Vulkan\Drawing\Drawing.hpp" />
+    <ClInclude Include="Engine\Vulkan\Drawing\Framebuffers\Framebuffer.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\ColorBlenders\ColorBlend.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\InputAssemblies\InputAssembly.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\MainGraphicsPipeline.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\Multisamplers\Multisampling.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\Rasterizers\Rasterizer.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\Scissors\Scissor.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\ShaderModules\ShaderModule.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\VertexInputs\VertexInput.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\Viewports\Viewport.hpp" />
+    <ClInclude Include="Engine\Vulkan\Instance.hpp" />
+    <ClInclude Include="Engine\Vulkan\Queues\GraphicsQueue.hpp" />
+    <ClInclude Include="Engine\Vulkan\Queues\PresentQueue.hpp" />
+    <ClInclude Include="Engine\Vulkan\RenderPasses\RenderPass.hpp" />
+    <ClInclude Include="Engine\Vulkan\Surface.hpp" />
+    <ClInclude Include="Engine\Vulkan\Swapchains\ImageViews.hpp" />
+    <ClInclude Include="Engine\Vulkan\Swapchains\Swapchain.hpp" />
+    <ClInclude Include="Engine\Vulkan\ValidationLayers\DebugUtils.hpp" />
+    <ClInclude Include="Engine\Vulkan\ValidationLayers\ValidLayers.hpp" />
+    <ClInclude Include="Engine\Vulkan\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="compile.bat" />

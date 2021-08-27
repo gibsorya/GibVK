@@ -13,6 +13,9 @@
 #include "Vulkan/Queues/PresentQueue.hpp"
 #include "Vulkan/Swapchains/Swapchain.hpp"
 #include "Vulkan/Swapchains/ImageViews.hpp"
+#include "Vulkan/GraphicsPipelines/MainGraphicsPipeline.hpp"
+#include "Vulkan/RenderPasses/RenderPass.hpp"
+#include "Vulkan/Drawing/Drawing.hpp"
 #include "Application.hpp"
 
 #include <memory>
@@ -26,6 +29,7 @@ namespace gibvk::graphics {
 
 		void initialize();
 		void render();
+		void drawFrame();
 		void cleanup();
 
 		[[nodiscard]] const vulkan::VulkanWindow &getWindow() const;
@@ -38,6 +42,7 @@ namespace gibvk::graphics {
 		[[nodiscard]] const vulkan::queues::PresentQueue& getPresentQueue() const;
 		[[nodiscard]] const vulkan::swapchains::Swapchain& getSwapchain() const;
 		[[nodiscard]] const vulkan::swapchains::ImageViews& getImageViews() const;
+		[[nodiscard]] const vulkan::renderpasses::RenderPass& getRenderPass() const;
 
 	private:
 		static std::unique_ptr<Graphics> graphics;
@@ -52,6 +57,7 @@ namespace gibvk::graphics {
 		std::unique_ptr<vulkan::queues::PresentQueue> presentQueue{};
 		std::unique_ptr<vulkan::swapchains::Swapchain> swapchain{};
 		std::unique_ptr<vulkan::swapchains::ImageViews> imageViews{};
+		std::unique_ptr<vulkan::renderpasses::RenderPass> renderPass{};
 	};
 
 	Graphics *get();
