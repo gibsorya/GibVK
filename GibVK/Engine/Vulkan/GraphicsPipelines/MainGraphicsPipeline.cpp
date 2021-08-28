@@ -1,5 +1,6 @@
 #include "MainGraphicsPipeline.hpp"
 #include "../../Graphics.hpp"
+#include "../../Renderer/Renderer.hpp"
 
 namespace gibvk::vulkan::pipelines {
 	std::unique_ptr<MainGraphicsPipeline> MainGraphicsPipeline::mainGraphicsPipeline = nullptr;
