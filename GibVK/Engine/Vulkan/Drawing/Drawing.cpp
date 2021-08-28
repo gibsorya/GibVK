@@ -16,14 +16,17 @@ namespace gibvk::vulkan::drawing {
 		return drawing.get();
 	}
 
-	void Drawing::initialize()
+	void Drawing::initialize(bool isSwapchainCleaning)
 	{
 		framebuffer = framebuffers::createFramebuffers();
-		commandPool = commandpools::createCommandPool();
+		if (!isSwapchainCleaning) {
+			commandPool = commandpools::createCommandPool();
+		}
 		commandBuffer = commandbuffers::createCommandBuffer();
-		/*syncObjects = syncobjects::createSyncObjects();*/
-		createSyncObjects();
-		//imagesInFlight.resize(graphics::get()->getSwapchain().getSwapchainImages().size(), VK_NULL_HANDLE);
+
+		if (!isSwapchainCleaning) {
+			createSyncObjects();
+		}
 	}
 
 	void Drawing::draw()
@@ -32,8 +35,14 @@ namespace gibvk::vulkan::drawing {
 		
 		uint32_t imageIndex;
 
-		graphics::get()->getLogicalDevice().getLogicalDevice().acquireNextImageKHR(graphics::get()->getSwapchain().getSwapchain(), UINT64_MAX, imageAvailableSemaphore[currentFrame],
-			VK_NULL_HANDLE, &imageIndex);
+		vk::Result result = graphics::get()->getLogicalDevice().getLogicalDevice().acquireNextImageKHR(graphics::get()->getSwapchain().getSwapchain(), UINT64_MAX, imageAvailableSemaphore[currentFrame], VK_NULL_HANDLE, &imageIndex);
+
+		if (result == vk::Result::eErrorOutOfDateKHR) {
+			graphics::get()->recreateSwapchain();
+			return;
+		} else if(result != vk::Result::eSuccess && result != vk::Result::eSuboptimalKHR) {
+			throw std::runtime_error("Failed to acquire swapchain image!");
+		}
 
 		if (imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
 			graphics::get()->getLogicalDevice().getLogicalDevice().waitForFences(1, &reinterpret_cast<vk::Fence&>(imagesInFlight[imageIndex]), VK_TRUE, UINT64_MAX);
@@ -57,8 +66,16 @@ namespace gibvk::vulkan::drawing {
 
 		auto presentInfo = vk::PresentInfoKHR(1, signalSemaphores, 1, swapchains, &imageIndex, nullptr);
 
-		graphics::get()->getPresentQueue().getPresentQueue().presentKHR(&presentInfo);
+		result = graphics::get()->getPresentQueue().getPresentQueue().presentKHR(&presentInfo);
 
+		if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR || &graphics::get()->getFramebufferResized()) {
+			graphics::get()->getFramebufferResized() = false;
+			graphics::get()->recreateSwapchain();
+			return;
+		}
+		else if (result != vk::Result::eSuccess) {
+			throw std::runtime_error("Failed to present swapchain image!");
+		}
 		currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 	}
 

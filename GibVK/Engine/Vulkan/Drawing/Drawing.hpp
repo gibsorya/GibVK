@@ -22,7 +22,7 @@ namespace gibvk::vulkan::drawing {
 
 		static Drawing* _get();
 
-		void initialize();
+		void initialize(bool isSwapchainCleaning = false);
 		void draw();
 		void createSyncObjects();
 

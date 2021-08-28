@@ -49,20 +49,35 @@ namespace gibvk::graphics {
 		vulkan::drawing::get()->draw();
 	}
 
-	void Graphics::cleanup()
+	void Graphics::recreateSwapchain()
 	{
-		for (size_t i = 0; i < vulkan::drawing::MAX_FRAMES_IN_FLIGHT; i++) {
-			logicalDevice->getLogicalDevice().destroySemaphore(vulkan::drawing::get()->getRenderFinishedSemaphore().at(i));
-			logicalDevice->getLogicalDevice().destroySemaphore(vulkan::drawing::get()->getImageAvailabeSemaphore().at(i));
-			logicalDevice->getLogicalDevice().destroyFence(vulkan::drawing::get()->getInFlightFences().at(i));
+		int width = 0, height = 0;
+		glfwGetFramebufferSize(window->getWindow(), &width, &height);
+
+		while (width == 0 || height == 0) {
+			glfwGetFramebufferSize(window->getWindow(), &width, &height);
+			glfwWaitEvents();
 		}
 
-		logicalDevice->getLogicalDevice().destroyCommandPool(vulkan::drawing::get()->getCommandPool().getCommandPool());
-	
+		logicalDevice->getLogicalDevice().waitIdle();
 
+		cleanupSwapchain();
+
+		swapchain = vulkan::swapchains::createSwapchain();
+		imageViews = vulkan::swapchains::createImageViews();
+		renderPass = vulkan::renderpasses::createRenderPass();
+		vulkan::pipelines::get()->initialize();
+		vulkan::drawing::get()->initialize(true);
+	}
+
+	void Graphics::cleanupSwapchain()
+	{
 		for (auto framebuffer : vulkan::drawing::get()->getFramebuffer().getSwapchainFramebuffers()) {
 			logicalDevice->getLogicalDevice().destroyFramebuffer(framebuffer);
 		}
+
+		logicalDevice->getLogicalDevice().freeCommandBuffers(vulkan::drawing::get()->getCommandPool().getCommandPool(), static_cast<uint32_t>(vulkan::drawing::get()->getCommandBuffer().getCommandBuffers().size()),
+			vulkan::drawing::get()->getCommandBuffer().getCommandBuffers().data());
 
 		logicalDevice->getLogicalDevice().destroyPipeline(vulkan::pipelines::get()->getGraphicsPipeline());
 		logicalDevice->getLogicalDevice().destroyPipelineLayout(vulkan::pipelines::get()->getPipelineLayout());
@@ -73,6 +88,20 @@ namespace gibvk::graphics {
 		}
 
 		logicalDevice->getLogicalDevice().destroySwapchainKHR(swapchain->getSwapchain());
+	}
+
+	void Graphics::cleanup()
+	{
+		cleanupSwapchain();
+
+		for (size_t i = 0; i < vulkan::drawing::MAX_FRAMES_IN_FLIGHT; i++) {
+			logicalDevice->getLogicalDevice().destroySemaphore(vulkan::drawing::get()->getRenderFinishedSemaphore().at(i));
+			logicalDevice->getLogicalDevice().destroySemaphore(vulkan::drawing::get()->getImageAvailabeSemaphore().at(i));
+			logicalDevice->getLogicalDevice().destroyFence(vulkan::drawing::get()->getInFlightFences().at(i));
+		}
+
+		logicalDevice->getLogicalDevice().destroyCommandPool(vulkan::drawing::get()->getCommandPool().getCommandPool());
+
 		logicalDevice->getLogicalDevice().destroy();
 
 		if (vulkan::enableValidationLayers) {
@@ -183,6 +212,17 @@ namespace gibvk::graphics {
 		}
 
 		return *renderPass;
+	}
+
+	bool& Graphics::getFramebufferResized()
+	{
+		return framebufferResized;
+	}
+
+	void Graphics::framebufferResizedCallback(GLFWwindow* window, int width, int height)
+	{
+		auto app = reinterpret_cast<Graphics*>(glfwGetWindowUserPointer(window));
+		app->framebufferResized = true;
 	}
 
 	Graphics* get()

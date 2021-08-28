@@ -1,5 +1,5 @@
 #include "Window.hpp"
-
+#include "../Graphics.hpp"
 namespace gibvk::vulkan {
 	VulkanWindow::VulkanWindow(uint32_t width, uint32_t height, const std::string& title)
 	{
@@ -9,6 +9,8 @@ namespace gibvk::vulkan {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+		glfwSetWindowUserPointer(window, this);
+		glfwSetFramebufferSizeCallback(window, graphics::get()->framebufferResizedCallback);
 	}
 	GLFWwindow* VulkanWindow::getWindow() const
 	{

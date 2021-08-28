@@ -30,6 +30,8 @@ namespace gibvk::graphics {
 		void initialize();
 		void render();
 		void drawFrame();
+		void recreateSwapchain();
+		void cleanupSwapchain();
 		void cleanup();
 
 		[[nodiscard]] const vulkan::VulkanWindow &getWindow() const;
@@ -43,6 +45,10 @@ namespace gibvk::graphics {
 		[[nodiscard]] const vulkan::swapchains::Swapchain& getSwapchain() const;
 		[[nodiscard]] const vulkan::swapchains::ImageViews& getImageViews() const;
 		[[nodiscard]] const vulkan::renderpasses::RenderPass& getRenderPass() const;
+
+		[[nodiscard]] bool& getFramebufferResized();
+
+		static void framebufferResizedCallback(GLFWwindow* window, int width, int height);
 
 	private:
 		static std::unique_ptr<Graphics> graphics;
@@ -58,6 +64,8 @@ namespace gibvk::graphics {
 		std::unique_ptr<vulkan::swapchains::Swapchain> swapchain{};
 		std::unique_ptr<vulkan::swapchains::ImageViews> imageViews{};
 		std::unique_ptr<vulkan::renderpasses::RenderPass> renderPass{};
+
+		bool framebufferResized = false;
 	};
 
 	Graphics *get();
