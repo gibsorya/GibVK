@@ -17,7 +17,10 @@ namespace gibvk::renderer::buffers::vertexbuffers {
 		}
 
 		static std::array<vk::VertexInputAttributeDescription, 2> getAttributeDescriptions() {
-			auto attributeDescriptions = std::array<vk::VertexInputAttributeDescription, 2>{(0, 0, vk::Format::eR32G32Sfloat, offsetof(Vertex, pos)), (1, 0, vk::Format::eR32G32B32Sfloat, offsetof(Vertex, color))};
+			auto attributeDescriptions = std::array<vk::VertexInputAttributeDescription, 2>{ {
+				{0, 0, vk::Format::eR32G32Sfloat, offsetof(Vertex, pos)},
+				{ 1, 0, vk::Format::eR32G32B32Sfloat, offsetof(Vertex, color) },
+				} };
 
 			return attributeDescriptions;
 		}
@@ -26,7 +29,7 @@ namespace gibvk::renderer::buffers::vertexbuffers {
 	};
 
 	const std::vector<Vertex> vertices = {
-		{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+		{{0.0f, -0.5f}, {1.0f, 1.0f, 1.0f}},
 		{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
 		{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
 	};
@@ -36,9 +39,13 @@ namespace gibvk::renderer::buffers::vertexbuffers {
 		VertexBuffer();
 
 		[[nodiscard]] const vk::Buffer& getVertexBuffer() const;
+		[[nodiscard]] const vk::DeviceMemory& getDeviceMemory() const;
+
+		uint32_t findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties);
 
 	private:
 		vk::Buffer vertexBuffer;
+		vk::DeviceMemory vertexBufferMemory;
 	};
 
 	std::unique_ptr<VertexBuffer> createVertexBuffer();

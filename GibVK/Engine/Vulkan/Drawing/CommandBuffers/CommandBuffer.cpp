@@ -1,6 +1,7 @@
 #include "CommandBuffer.hpp"
 #include "../Drawing.hpp"
 #include "../../../Graphics.hpp"
+#include "../../../Renderer/Renderer.hpp"
 
 namespace gibvk::vulkan::drawing::commandbuffers {
 	CommandBuffer::CommandBuffer()
@@ -31,7 +32,11 @@ namespace gibvk::vulkan::drawing::commandbuffers {
 
 			commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, pipelines::get()->getGraphicsPipeline());
 
-			commandBuffers[i].draw(3, 1, 0, 0);
+			vk::Buffer vertexBuffers[] = {renderer::buffers::get()->getVertexBuffer().getVertexBuffer()};
+			vk::DeviceSize offsets[] = {0};
+			commandBuffers[i].bindVertexBuffers(0, 1, vertexBuffers, offsets);
+
+			commandBuffers[i].draw(static_cast<uint32_t>(renderer::buffers::vertexbuffers::vertices.size()), 1, 0, 0);
 
 			//vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
 

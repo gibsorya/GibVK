@@ -1,6 +1,6 @@
 #include "Drawing.hpp"
 #include "../../Graphics.hpp"
-
+#include "../../Renderer/Renderer.hpp"
 namespace gibvk::vulkan::drawing {
 	std::unique_ptr<Drawing> Drawing::drawing = nullptr;
 
@@ -21,6 +21,7 @@ namespace gibvk::vulkan::drawing {
 		framebuffer = framebuffers::createFramebuffers();
 		if (!isSwapchainCleaning) {
 			commandPool = commandpools::createCommandPool();
+			renderer::get()->initialize();
 		}
 		commandBuffer = commandbuffers::createCommandBuffer();
 

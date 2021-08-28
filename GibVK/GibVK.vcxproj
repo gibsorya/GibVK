@@ -159,6 +159,9 @@
     <ClCompile Include="Engine\Application.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Graphics.cpp" />
+    <ClCompile Include="Engine\Renderer\Buffers\Buffers.cpp" />
+    <ClCompile Include="Engine\Renderer\Buffers\VertexBuffers\VertexBuffer.cpp" />
+    <ClCompile Include="Engine\Renderer\Renderer.cpp" />
     <ClCompile Include="Engine\Vulkan\Devices\LogicalDevices.cpp" />
     <ClCompile Include="Engine\Vulkan\Devices\PhysicalDevices.cpp" />
     <ClCompile Include="Engine\Vulkan\Devices\QueueFamilies.cpp" />
@@ -191,6 +194,9 @@
     <ClInclude Include="Engine\Application.hpp" />
     <ClInclude Include="Engine\Engine.hpp" />
     <ClInclude Include="Engine\Graphics.hpp" />
+    <ClInclude Include="Engine\Renderer\Buffers\Buffers.hpp" />
+    <ClInclude Include="Engine\Renderer\Buffers\VertexBuffers\VertexBuffer.hpp" />
+    <ClInclude Include="Engine\Renderer\Renderer.hpp" />
     <ClInclude Include="Engine\Vulkan\Devices\LogicalDevices.hpp" />
     <ClInclude Include="Engine\Vulkan\Devices\PhysicalDevices.hpp" />
     <ClInclude Include="Engine\Vulkan\Devices\QueueFamilies.hpp" />

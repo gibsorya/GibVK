@@ -11,6 +11,7 @@ namespace gibvk::renderer::buffers {
 	}
 	void Buffers::initialize()
 	{
+		vertexBuffer = vertexbuffers::createVertexBuffer();
 	}
 	const vertexbuffers::VertexBuffer& Buffers::getVertexBuffer() const
 	{

@@ -30,7 +30,12 @@ namespace gibvk::vulkan::pipelines {
 		fragShaderStageInfo = vk::PipelineShaderStageCreateInfo({}, vk::ShaderStageFlagBits::eFragment, fragShaderModule->getShaderModule(), "main");
 		vk::PipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo, fragShaderStageInfo };
 
-		vertexInput = vertexinputs::createVertexInput();
+		//vertexInput = vertexinputs::createVertexInput();
+		auto bindingDescription = renderer::buffers::vertexbuffers::Vertex::getBindingDescription();
+		auto attributeDescriptions = renderer::buffers::vertexbuffers::Vertex::getAttributeDescriptions();
+
+		auto vertexInputInfo = vk::PipelineVertexInputStateCreateInfo({}, 1, &bindingDescription, static_cast<uint32_t>(attributeDescriptions.size()), attributeDescriptions.data());
+
 		inputAssembly = assemblies::createInputAssembly();
 		viewport = viewports::createViewport();
 		scissor = scissors::createScissor();
@@ -46,7 +51,7 @@ namespace gibvk::vulkan::pipelines {
 			throw std::runtime_error("Failed to create pipeline layout!");
 		}
 
-		auto pipelineInfo = vk::GraphicsPipelineCreateInfo({}, 2, shaderStages, &vertexInput->getVertexInputInfo(), &inputAssembly->getInputAssemblyInfo(),
+		auto pipelineInfo = vk::GraphicsPipelineCreateInfo({}, 2, shaderStages, &vertexInputInfo, &inputAssembly->getInputAssemblyInfo(),
 			nullptr, &viewportState->getViewportState(), &rasterizer->getRasterizer(), &multisampling->getMultisampling(), nullptr, &colorBlending->getColorBlending(), 
 			nullptr, pipelineLayout, graphics::get()->getRenderPass().getRenderPass(), 0, VK_NULL_HANDLE, -1);
 

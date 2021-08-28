@@ -1,5 +1,5 @@
 #include "Graphics.hpp"
-
+#include "Renderer/Buffers/Buffers.hpp"
 namespace gibvk::graphics {
 	std::unique_ptr<Graphics> Graphics::graphics = nullptr;
 
@@ -93,6 +93,9 @@ namespace gibvk::graphics {
 	void Graphics::cleanup()
 	{
 		cleanupSwapchain();
+
+		logicalDevice->getLogicalDevice().destroyBuffer(renderer::buffers::get()->getVertexBuffer().getVertexBuffer());
+		logicalDevice->getLogicalDevice().freeMemory(renderer::buffers::get()->getVertexBuffer().getDeviceMemory());
 
 		for (size_t i = 0; i < vulkan::drawing::MAX_FRAMES_IN_FLIGHT; i++) {
 			logicalDevice->getLogicalDevice().destroySemaphore(vulkan::drawing::get()->getRenderFinishedSemaphore().at(i));
