@@ -38,6 +38,9 @@ namespace gibvk::renderer::buffers::vertexbuffers {
 	public:
 		VertexBuffer();
 
+		void createBuffer(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Buffer& buffer, vk::DeviceMemory& bufferMemory);
+		void copyBuffer(vk::Buffer srcBuffer, vk::Buffer dstBuffer, vk::DeviceSize size);
+
 		[[nodiscard]] const vk::Buffer& getVertexBuffer() const;
 		[[nodiscard]] const vk::DeviceMemory& getDeviceMemory() const;
 

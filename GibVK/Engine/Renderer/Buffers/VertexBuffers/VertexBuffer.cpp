@@ -6,28 +6,69 @@ namespace gibvk::renderer::buffers::vertexbuffers {
 
 	VertexBuffer::VertexBuffer()
 	{
-		auto bufferInfo = vk::BufferCreateInfo({}, (sizeof(vertices[0]) * vertices.size()), vk::BufferUsageFlagBits::eVertexBuffer, vk::SharingMode::eExclusive);
+		vk::DeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
 
-		if (graphics::get()->getLogicalDevice().getLogicalDevice().createBuffer(&bufferInfo, nullptr, &vertexBuffer) != vk::Result::eSuccess) {
+		vk::Buffer stagingBuffer;
+		vk::DeviceMemory stagingBufferMemory;
+		createBuffer(bufferSize, vk::BufferUsageFlagBits::eTransferSrc, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, stagingBuffer, stagingBufferMemory);
+
+		void* data;
+		graphics::get()->getLogicalDevice().getLogicalDevice().mapMemory(stagingBufferMemory, 0, bufferSize, {}, &data);
+			memcpy(data, vertices.data(), (size_t)bufferSize);
+		graphics::get()->getLogicalDevice().getLogicalDevice().unmapMemory(stagingBufferMemory);
+		createBuffer(bufferSize, vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer, vk::MemoryPropertyFlagBits::eDeviceLocal, vertexBuffer, vertexBufferMemory);
+
+		copyBuffer(stagingBuffer, vertexBuffer, bufferSize);
+		graphics::get()->getLogicalDevice().getLogicalDevice().destroyBuffer(stagingBuffer);
+		graphics::get()->getLogicalDevice().getLogicalDevice().freeMemory(stagingBufferMemory, nullptr);
+	}
+
+	void VertexBuffer::createBuffer(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Buffer& buffer, vk::DeviceMemory& bufferMemory)
+	{
+		auto bufferInfo = vk::BufferCreateInfo({}, size, usage, vk::SharingMode::eExclusive);
+
+		if (graphics::get()->getLogicalDevice().getLogicalDevice().createBuffer(&bufferInfo, nullptr, &buffer) != vk::Result::eSuccess) {
 			throw std::runtime_error("Failed to create vertex buffer!");
 		}
 
 		vk::MemoryRequirements memRequirements;
-		graphics::get()->getLogicalDevice().getLogicalDevice().getBufferMemoryRequirements(vertexBuffer, &memRequirements);
+		graphics::get()->getLogicalDevice().getLogicalDevice().getBufferMemoryRequirements(buffer, &memRequirements);
 
-		auto allocInfo = vk::MemoryAllocateInfo(memRequirements.size, findMemoryType(memRequirements.memoryTypeBits, 
-			vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent));
+		auto allocInfo = vk::MemoryAllocateInfo(memRequirements.size, findMemoryType(memRequirements.memoryTypeBits, properties));
 
-		if (graphics::get()->getLogicalDevice().getLogicalDevice().allocateMemory(&allocInfo, nullptr, &vertexBufferMemory) != vk::Result::eSuccess) {
+		if (graphics::get()->getLogicalDevice().getLogicalDevice().allocateMemory(&allocInfo, nullptr, &bufferMemory) != vk::Result::eSuccess) {
 			throw std::runtime_error("Failed to allocate vertex buffer memory");
 		}
 
-		graphics::get()->getLogicalDevice().getLogicalDevice().bindBufferMemory(vertexBuffer, vertexBufferMemory, 0);
+		graphics::get()->getLogicalDevice().getLogicalDevice().bindBufferMemory(buffer, bufferMemory, 0);
+	}
 
-		void* data;
-		graphics::get()->getLogicalDevice().getLogicalDevice().mapMemory(vertexBufferMemory, 0, bufferInfo.size, {}, &data);
-			memcpy(data, vertices.data(), (size_t)bufferInfo.size);
-		graphics::get()->getLogicalDevice().getLogicalDevice().unmapMemory(vertexBufferMemory);
+	void VertexBuffer::copyBuffer(vk::Buffer srcBuffer, vk::Buffer dstBuffer, vk::DeviceSize size)
+	{
+		auto allocInfo = vk::CommandBufferAllocateInfo(vulkan::drawing::get()->getCommandPool().getCommandPool(), vk::CommandBufferLevel::ePrimary, 1);
+
+		vk::CommandBuffer commandBuffer;
+		graphics::get()->getLogicalDevice().getLogicalDevice().allocateCommandBuffers(&allocInfo, &commandBuffer);
+
+		auto beginInfo = vk::CommandBufferBeginInfo({vk::CommandBufferUsageFlagBits::eOneTimeSubmit});
+
+		commandBuffer.begin(&beginInfo);
+
+		auto copyRegion = vk::BufferCopy(0, 0, size);
+		commandBuffer.copyBuffer(srcBuffer, dstBuffer, 1, &copyRegion);
+		commandBuffer.end();
+
+		vk::SubmitInfo submitInfo{};
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &commandBuffer;
+
+
+		graphics::get()->getGraphicsQueue().getGraphicsQueue().submit(1, &submitInfo, VK_NULL_HANDLE);
+		graphics::get()->getGraphicsQueue().getGraphicsQueue().waitIdle();
+
+		graphics::get()->getLogicalDevice().getLogicalDevice().freeCommandBuffers(vulkan::drawing::get()->getCommandPool().getCommandPool(), 1, &commandBuffer);
+		
+
 	}
 
 	uint32_t VertexBuffer::findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties)
