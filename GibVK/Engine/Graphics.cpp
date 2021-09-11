@@ -94,6 +94,9 @@ namespace gibvk::graphics {
 	{
 		cleanupSwapchain();
 
+		logicalDevice->getLogicalDevice().destroyBuffer(renderer::buffers::get()->getIndexBuffer().getIndexBuffer());
+		logicalDevice->getLogicalDevice().freeMemory(renderer::buffers::get()->getIndexBuffer().getIndexBufferMemory());
+
 		logicalDevice->getLogicalDevice().destroyBuffer(renderer::buffers::get()->getVertexBuffer().getVertexBuffer());
 		logicalDevice->getLogicalDevice().freeMemory(renderer::buffers::get()->getVertexBuffer().getDeviceMemory());
 

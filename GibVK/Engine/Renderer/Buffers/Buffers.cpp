@@ -15,7 +15,7 @@ namespace gibvk::renderer::buffers {
 	void Buffers::initialize()
 	{
 		vertexBuffer = vertexbuffers::createVertexBuffer();
-		//indexBuffer = indexbuffers::createIndexBuffer();
+		indexBuffer = indexbuffers::createIndexBuffer();
 	}
 
 	uint32_t Buffers::findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties)
@@ -92,6 +92,8 @@ namespace gibvk::renderer::buffers {
 		if (indexBuffer == nullptr) {
 			throw std::runtime_error("Index buffer has not been initialized!");
 		}
+
+		return *indexBuffer;
 	}
 
 	Buffers* get()

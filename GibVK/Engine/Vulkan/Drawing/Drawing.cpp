@@ -128,15 +128,6 @@ namespace gibvk::vulkan::drawing {
 		return *commandBuffer;
 	}
 
-	/*const syncobjects::SyncObjects& Drawing::getSyncObjects() const
-	{
-		if (syncObjects == nullptr) {
-			throw std::runtime_error("Command pool has not been initialized");
-		}
-
-		return *syncObjects;
-	}*/
-
 	const size_t& Drawing::getCurrentFrame() const
 	{
 		return currentFrame;
@@ -161,11 +152,6 @@ namespace gibvk::vulkan::drawing {
 	{
 		return inFlightFences;
 	}
-
-	//const std::vector<vk::Fence>& Drawing::getImagesInFlight() const
-	//{
-	//	return imagesInFlight;
-	//}
 
 	Drawing* get()
 	{

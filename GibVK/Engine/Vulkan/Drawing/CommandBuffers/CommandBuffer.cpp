@@ -28,19 +28,16 @@ namespace gibvk::vulkan::drawing::commandbuffers {
 
 			commandBuffers[i].beginRenderPass(&renderPassInfo, vk::SubpassContents::eInline);
 
-			//vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, )
-
 			commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, pipelines::get()->getGraphicsPipeline());
 
 			vk::Buffer vertexBuffers[] = {renderer::buffers::get()->getVertexBuffer().getVertexBuffer()};
 			vk::DeviceSize offsets[] = {0};
 			commandBuffers[i].bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-			commandBuffers[i].draw(static_cast<uint32_t>(renderer::buffers::vertexbuffers::vertices.size()), 1, 0, 0);
+			commandBuffers[i].bindIndexBuffer(renderer::buffers::get()->getIndexBuffer().getIndexBuffer(), 0, vk::IndexType::eUint16);
 
-			//vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+			commandBuffers[i].drawIndexed(static_cast<uint32_t>(renderer::buffers::indexbuffers::indices.size()), 1, 0, 0, 0);
 
-			//vkCmdEndRenderPass(commandBuffers[i]);
 			commandBuffers[i].endRenderPass();
 			
 			if  (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {
