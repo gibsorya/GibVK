@@ -1,4 +1,5 @@
 #include "Renderer.hpp"
+#include "Buffers/Buffers.hpp"
 
 namespace gibvk::renderer {
 	std::unique_ptr<Renderer> Renderer::renderer = nullptr;
@@ -14,9 +15,9 @@ namespace gibvk::renderer {
 		return renderer.get();
 	}
 
-	void Renderer::initialize()
+	void Renderer::initialize(bool recreatingSwapchain)
 	{
-		buffers::get()->initialize();
+		buffers::get()->initialize(recreatingSwapchain);
 	}
 
 	Renderer* get()

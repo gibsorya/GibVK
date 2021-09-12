@@ -10,7 +10,7 @@ namespace gibvk::renderer::buffers::indexbuffers {
 		vk::Buffer stagingBuffer;
 		vk::DeviceMemory stagingBufferMemory;
 		buffers::get()->createBuffer(bufferSize, vk::BufferUsageFlagBits::eTransferSrc, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent, stagingBuffer, stagingBufferMemory);
-
+		
 		void* data;
 		graphics::get()->getLogicalDevice().getLogicalDevice().mapMemory(stagingBufferMemory, 0, bufferSize, {}, &data);
 			memcpy(data, indices.data(), (size_t)bufferSize);

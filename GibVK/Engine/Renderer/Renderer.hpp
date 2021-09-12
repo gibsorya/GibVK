@@ -4,7 +4,6 @@
 #include <memory>
 #include <vulkan/vulkan.hpp>
 
-#include "Buffers/Buffers.hpp"
 
 namespace gibvk::renderer {
 	class Renderer {
@@ -13,7 +12,7 @@ namespace gibvk::renderer {
 
 		static Renderer* _get();
 
-		void initialize();
+		void initialize(bool recreatingSwapchain = false);
 
 	private:
 		static std::unique_ptr<Renderer> renderer;

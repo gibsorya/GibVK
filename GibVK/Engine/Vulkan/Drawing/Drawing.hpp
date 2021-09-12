@@ -25,6 +25,7 @@ namespace gibvk::vulkan::drawing {
 		void initialize(bool isSwapchainCleaning = false);
 		void draw();
 		void createSyncObjects();
+		void updateUniformBuffer(uint32_t currentImage);
 
 		[[nodiscard]] const framebuffers::Framebuffer& getFramebuffer() const;
 		[[nodiscard]] const commandpools::CommandPool& getCommandPool() const;

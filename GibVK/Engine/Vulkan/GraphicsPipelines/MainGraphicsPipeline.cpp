@@ -1,6 +1,6 @@
 #include "MainGraphicsPipeline.hpp"
 #include "../../Graphics.hpp"
-#include "../../Renderer/Renderer.hpp"
+#include "../../Renderer/Buffers/Buffers.hpp"
 
 namespace gibvk::vulkan::pipelines {
 	std::unique_ptr<MainGraphicsPipeline> MainGraphicsPipeline::mainGraphicsPipeline = nullptr;
@@ -45,7 +45,7 @@ namespace gibvk::vulkan::pipelines {
 		colorBlendAttachment = colorblends::createColorBlendAttachment();
 		colorBlending = colorblends::createColorBlending();
 
-		pipelineLayoutInfo = vk::PipelineLayoutCreateInfo({}, 0, nullptr, 0, nullptr);
+		pipelineLayoutInfo = vk::PipelineLayoutCreateInfo({}, 1, &renderer::buffers::get()->getDescriptorSetLayout().getDescriptorSetLayout(), 0, nullptr);
 
 		if (gibvk::graphics::get()->getLogicalDevice().getLogicalDevice().createPipelineLayout(&pipelineLayoutInfo, nullptr, &pipelineLayout) != vk::Result::eSuccess) {
 			throw std::runtime_error("Failed to create pipeline layout!");

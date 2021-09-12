@@ -12,10 +12,21 @@ namespace gibvk::renderer::buffers {
 		return buffer.get();
 	}
 
-	void Buffers::initialize()
+	void Buffers::initialize(bool recreatingSwapchain)
 	{
-		vertexBuffer = vertexbuffers::createVertexBuffer();
-		indexBuffer = indexbuffers::createIndexBuffer();
+		if (!recreatingSwapchain) {
+			vertexBuffer = vertexbuffers::createVertexBuffer();
+			indexBuffer = indexbuffers::createIndexBuffer();
+		}
+
+		uniformBuffer = uniformbuffers::createUniformBuffers();
+		descriptorPool = descriptors::createDescriptorPool();
+		descriptorSets = descriptors::createDescriptorSets();
+	}
+
+	void Buffers::initDescriptor()
+	{
+		descriptorSetLayout = descriptors::createDescriptorSetLayout();
 	}
 
 	uint32_t Buffers::findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties)
@@ -94,6 +105,42 @@ namespace gibvk::renderer::buffers {
 		}
 
 		return *indexBuffer;
+	}
+
+	const descriptors::DescriptorSetLayout& Buffers::getDescriptorSetLayout() const
+	{
+		if (descriptorSetLayout == nullptr) {
+			throw std::runtime_error("Descriptor Set Layout has not been initialized!");
+		}
+
+		return *descriptorSetLayout;
+	}
+
+	const descriptors::DescriptorSets& Buffers::getDescriptorSets() const
+	{
+		if (descriptorSets == nullptr) {
+			throw std::runtime_error("Descriptor Sets has not been initialized!");
+		}
+
+		return *descriptorSets;
+	}
+
+	const descriptors::DescriptorPool& Buffers::getDescriptorPool() const
+	{
+		if (descriptorPool == nullptr) {
+			throw std::runtime_error("Descriptor Pool has not been initialized!");
+		}
+
+		return *descriptorPool;
+	}
+
+	const uniformbuffers::UniformBuffer& Buffers::getUniformBuffer() const
+	{
+		if (uniformBuffer == nullptr) {
+			throw std::runtime_error("Uniform buffers have not been initialized!");
+		}
+
+		return *uniformBuffer;
 	}
 
 	Buffers* get()

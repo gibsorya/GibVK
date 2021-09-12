@@ -1,5 +1,6 @@
 #include "Graphics.hpp"
 #include "Renderer/Buffers/Buffers.hpp"
+
 namespace gibvk::graphics {
 	std::unique_ptr<Graphics> Graphics::graphics = nullptr;
 
@@ -30,6 +31,7 @@ namespace gibvk::graphics {
 		swapchain = vulkan::swapchains::createSwapchain();
 		imageViews = vulkan::swapchains::createImageViews();
 		renderPass = vulkan::renderpasses::createRenderPass();
+		renderer::buffers::get()->initDescriptor();
 		vulkan::pipelines::get()->initialize();
 		vulkan::drawing::get()->initialize();
 	}
@@ -88,11 +90,20 @@ namespace gibvk::graphics {
 		}
 
 		logicalDevice->getLogicalDevice().destroySwapchainKHR(swapchain->getSwapchain());
+
+		for (size_t i = 0; i < swapchain->getSwapchainImages().size(); i++) {
+			logicalDevice->getLogicalDevice().destroyBuffer(renderer::buffers::get()->getUniformBuffer().getUniformbuffers().at(i));
+			logicalDevice->getLogicalDevice().freeMemory(renderer::buffers::get()->getUniformBuffer().getUniformbuffersMemory().at(i));
+		}
+
+		logicalDevice->getLogicalDevice().destroyDescriptorPool(renderer::buffers::get()->getDescriptorPool().getDescriptorPool());
 	}
 
 	void Graphics::cleanup()
 	{
 		cleanupSwapchain();
+
+		logicalDevice->getLogicalDevice().destroyDescriptorSetLayout(renderer::buffers::get()->getDescriptorSetLayout().getDescriptorSetLayout());
 
 		logicalDevice->getLogicalDevice().destroyBuffer(renderer::buffers::get()->getIndexBuffer().getIndexBuffer());
 		logicalDevice->getLogicalDevice().freeMemory(renderer::buffers::get()->getIndexBuffer().getIndexBufferMemory());

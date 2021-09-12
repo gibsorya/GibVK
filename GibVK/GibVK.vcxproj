@@ -161,6 +161,9 @@
     <ClCompile Include="Engine\Graphics.cpp" />
     <ClCompile Include="Engine\Renderer\Buffers\Buffers.cpp" />
     <ClCompile Include="Engine\Renderer\Buffers\IndexBuffers\IndexBuffer.cpp" />
+    <ClCompile Include="Engine\Renderer\Buffers\UniformBuffers\DescriptorPool.cpp" />
+    <ClCompile Include="Engine\Renderer\Buffers\UniformBuffers\DescriptorSet.cpp" />
+    <ClCompile Include="Engine\Renderer\Buffers\UniformBuffers\UniformBuffers.cpp" />
     <ClCompile Include="Engine\Renderer\Buffers\VertexBuffers\VertexBuffer.cpp" />
     <ClCompile Include="Engine\Renderer\Renderer.cpp" />
     <ClCompile Include="Engine\Vulkan\Devices\LogicalDevices.cpp" />
@@ -197,6 +200,9 @@
     <ClInclude Include="Engine\Graphics.hpp" />
     <ClInclude Include="Engine\Renderer\Buffers\Buffers.hpp" />
     <ClInclude Include="Engine\Renderer\Buffers\IndexBuffers\IndexBuffer.hpp" />
+    <ClInclude Include="Engine\Renderer\Buffers\UniformBuffers\DescriptorPool.hpp" />
+    <ClInclude Include="Engine\Renderer\Buffers\UniformBuffers\DescriptorSet.hpp" />
+    <ClInclude Include="Engine\Renderer\Buffers\UniformBuffers\UniformBuffers.hpp" />
     <ClInclude Include="Engine\Renderer\Buffers\VertexBuffers\VertexBuffer.hpp" />
     <ClInclude Include="Engine\Renderer\Renderer.hpp" />
     <ClInclude Include="Engine\Vulkan\Devices\LogicalDevices.hpp" />

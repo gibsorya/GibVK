@@ -2,6 +2,7 @@
 #include "../Drawing.hpp"
 #include "../../../Graphics.hpp"
 #include "../../../Renderer/Renderer.hpp"
+#include "../../../Renderer/Buffers/Buffers.hpp"
 
 namespace gibvk::vulkan::drawing::commandbuffers {
 	CommandBuffer::CommandBuffer()
@@ -32,10 +33,12 @@ namespace gibvk::vulkan::drawing::commandbuffers {
 
 			vk::Buffer vertexBuffers[] = {renderer::buffers::get()->getVertexBuffer().getVertexBuffer()};
 			vk::DeviceSize offsets[] = {0};
+
 			commandBuffers[i].bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
 			commandBuffers[i].bindIndexBuffer(renderer::buffers::get()->getIndexBuffer().getIndexBuffer(), 0, vk::IndexType::eUint16);
 
+			commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelines::get()->getPipelineLayout(), 0, 1, &renderer::buffers::get()->getDescriptorSets().getDescriptorSets().at(i), 0, nullptr);
 			commandBuffers[i].drawIndexed(static_cast<uint32_t>(renderer::buffers::indexbuffers::indices.size()), 1, 0, 0, 0);
 
 			commandBuffers[i].endRenderPass();
