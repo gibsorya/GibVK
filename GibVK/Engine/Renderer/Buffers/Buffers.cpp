@@ -65,6 +65,16 @@ namespace gibvk::renderer::buffers {
 
 	void Buffers::copyBuffer(vk::Buffer srcBuffer, vk::Buffer dstBuffer, vk::DeviceSize size)
 	{
+		vk::CommandBuffer commandBuffer = beginSingleTimeCommands();
+		
+		auto copyRegion = vk::BufferCopy(0, 0, size);
+		commandBuffer.copyBuffer(srcBuffer, dstBuffer, 1, &copyRegion);
+
+		endSingleTimeCommands(commandBuffer);
+	}
+
+	vk::CommandBuffer beginSingleTimeCommands()
+	{
 		auto allocInfo = vk::CommandBufferAllocateInfo(vulkan::drawing::get()->getCommandPool().getCommandPool(), vk::CommandBufferLevel::ePrimary, 1);
 
 		vk::CommandBuffer commandBuffer;
@@ -74,14 +84,16 @@ namespace gibvk::renderer::buffers {
 
 		commandBuffer.begin(&beginInfo);
 
-		auto copyRegion = vk::BufferCopy(0, 0, size);
-		commandBuffer.copyBuffer(srcBuffer, dstBuffer, 1, &copyRegion);
+		return commandBuffer;
+	}
+
+	void endSingleTimeCommands(vk::CommandBuffer commandBuffer)
+	{
 		commandBuffer.end();
 
 		vk::SubmitInfo submitInfo{};
 		submitInfo.commandBufferCount = 1;
 		submitInfo.pCommandBuffers = &commandBuffer;
-
 
 		graphics::get()->getGraphicsQueue().getGraphicsQueue().submit(1, &submitInfo, VK_NULL_HANDLE);
 		graphics::get()->getGraphicsQueue().getGraphicsQueue().waitIdle();

@@ -89,7 +89,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\stb-master;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -107,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\stb-master;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -125,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\stb-master;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -143,7 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\stb-master;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glm;C:\Users\Ryan\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;C:\VulkanSDK\1.2.182.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -189,6 +189,7 @@
     <ClCompile Include="Engine\Vulkan\Surface.cpp" />
     <ClCompile Include="Engine\Vulkan\Swapchains\ImageViews.cpp" />
     <ClCompile Include="Engine\Vulkan\Swapchains\Swapchain.cpp" />
+    <ClCompile Include="Engine\Vulkan\Drawing\TextureImages\TextureImage.cpp" />
     <ClCompile Include="Engine\Vulkan\ValidationLayers\DebugUtils.cpp" />
     <ClCompile Include="Engine\Vulkan\ValidationLayers\ValidLayers.cpp" />
     <ClCompile Include="Engine\Vulkan\Window.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="Engine\Vulkan\Surface.hpp" />
     <ClInclude Include="Engine\Vulkan\Swapchains\ImageViews.hpp" />
     <ClInclude Include="Engine\Vulkan\Swapchains\Swapchain.hpp" />
+    <ClInclude Include="Engine\Vulkan\Drawing\TextureImages\TextureImage.hpp" />
     <ClInclude Include="Engine\Vulkan\ValidationLayers\DebugUtils.hpp" />
     <ClInclude Include="Engine\Vulkan\ValidationLayers\ValidLayers.hpp" />
     <ClInclude Include="Engine\Vulkan\Window.hpp" />

@@ -103,6 +103,9 @@ namespace gibvk::graphics {
 	{
 		cleanupSwapchain();
 
+		logicalDevice->getLogicalDevice().destroyImage(vulkan::drawing::get()->getTextureImage().getTextureImage());
+		logicalDevice->getLogicalDevice().freeMemory(vulkan::drawing::get()->getTextureImage().getTextureImageMemory());
+
 		logicalDevice->getLogicalDevice().destroyDescriptorSetLayout(renderer::buffers::get()->getDescriptorSetLayout().getDescriptorSetLayout());
 
 		logicalDevice->getLogicalDevice().destroyBuffer(renderer::buffers::get()->getIndexBuffer().getIndexBuffer());

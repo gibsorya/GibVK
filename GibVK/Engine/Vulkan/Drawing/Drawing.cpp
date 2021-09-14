@@ -22,6 +22,7 @@ namespace gibvk::vulkan::drawing {
 		framebuffer = framebuffers::createFramebuffers();
 		if (!isSwapchainCleaning) {
 			commandPool = commandpools::createCommandPool();
+			textureImage = textureimages::createTextureImage();
 		}
 		renderer::get()->initialize(isSwapchainCleaning);
 		commandBuffer = commandbuffers::createCommandBuffer();
@@ -152,6 +153,15 @@ namespace gibvk::vulkan::drawing {
 		return *commandBuffer;
 	}
 
+	const textureimages::TextureImage& gibvk::vulkan::drawing::Drawing::getTextureImage() const
+	{
+		if (textureImage == nullptr) {
+			throw std::runtime_error("Texture image has not been initialized");
+		}
+
+		return *textureImage;
+	}
+
 	const size_t& Drawing::getCurrentFrame() const
 	{
 		return currentFrame;
@@ -175,6 +185,27 @@ namespace gibvk::vulkan::drawing {
 	const std::vector<vk::Fence>& Drawing::getInFlightFences() const
 	{
 		return inFlightFences;
+	}
+
+	void createImage(uint32_t width, uint32_t height, vk::Format format, vk::ImageTiling tiling, vk::ImageUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Image& image, vk::DeviceMemory& imageMemory)
+	{
+
+		auto imageInfo = vk::ImageCreateInfo({}, vk::ImageType::e2D, format, { width, height, 1 }, 1, 1, vk::SampleCountFlagBits::e1, tiling, usage, vk::SharingMode::eExclusive, 0, nullptr, vk::ImageLayout::eUndefined);
+
+		if (graphics::get()->getLogicalDevice().getLogicalDevice().createImage(&imageInfo, nullptr, &image) != vk::Result::eSuccess) {
+			throw std::runtime_error("Failed to create image!");
+		}
+
+		vk::MemoryRequirements memRequirements;
+		graphics::get()->getLogicalDevice().getLogicalDevice().getImageMemoryRequirements(image, &memRequirements);
+
+		auto allocInfo = vk::MemoryAllocateInfo(memRequirements.size, renderer::buffers::get()->findMemoryType(memRequirements.memoryTypeBits, properties));
+
+		if (graphics::get()->getLogicalDevice().getLogicalDevice().allocateMemory(&allocInfo, nullptr, &imageMemory) != vk::Result::eSuccess) {
+			throw std::runtime_error("Failed to allocate image memory!");
+		}
+
+		graphics::get()->getLogicalDevice().getLogicalDevice().bindImageMemory(image, imageMemory, 0);
 	}
 
 	Drawing* get()

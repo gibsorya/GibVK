@@ -20,6 +20,8 @@ namespace gibvk::renderer::buffers {
 		uint32_t findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties);
 		void createBuffer(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Buffer& buffer, vk::DeviceMemory& bufferMemory);
 		void copyBuffer(vk::Buffer srcBuffer, vk::Buffer dstBuffer, vk::DeviceSize size);
+		
+		
 
 		[[nodiscard]] const vertexbuffers::VertexBuffer& getVertexBuffer() const;
 		[[nodiscard]] const indexbuffers::IndexBuffer& getIndexBuffer() const;
@@ -38,6 +40,9 @@ namespace gibvk::renderer::buffers {
 		std::unique_ptr<descriptors::DescriptorPool> descriptorPool{};
 		std::unique_ptr<uniformbuffers::UniformBuffer> uniformBuffer{};
 	};
+
+	vk::CommandBuffer beginSingleTimeCommands();
+	void endSingleTimeCommands(vk::CommandBuffer commandBuffer);
 
 	Buffers* get();
 }
