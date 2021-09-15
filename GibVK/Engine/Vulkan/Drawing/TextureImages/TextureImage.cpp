@@ -93,4 +93,44 @@ namespace gibvk::vulkan::drawing::textureimages {
 	{
 		return std::make_unique<TextureImage>();
 	}
+
+
+	TextureImageView::TextureImageView() 
+	{
+		textureImageView = graphics::get()->createImageView(drawing::get()->getTextureImage().getTextureImage(), vk::Format::eR8G8B8A8Srgb);
+	}
+
+	const vk::ImageView& gibvk::vulkan::drawing::textureimages::TextureImageView::getTextureImageView() const
+	{
+		return textureImageView;
+	}
+
+	std::unique_ptr<TextureImageView> createTextureImageView()
+	{
+		return std::make_unique<TextureImageView>();
+	}
+
+	TextureSampler::TextureSampler()
+	{
+		vk::PhysicalDeviceProperties properties{};
+		graphics::get()->getPhysicalDevice().getPhysicalDevice().getProperties(&properties);
+
+		auto samplerInfo = vk::SamplerCreateInfo({}, vk::Filter::eLinear, vk::Filter::eLinear, vk::SamplerMipmapMode::eLinear, vk::SamplerAddressMode::eRepeat, 
+			vk::SamplerAddressMode::eRepeat, vk::SamplerAddressMode::eRepeat, 0.0f, VK_TRUE, properties.limits.maxSamplerAnisotropy, VK_FALSE, vk::CompareOp::eAlways,
+			0.0f, 0.0f, vk::BorderColor::eIntOpaqueBlack, VK_FALSE);
+		
+		if (graphics::get()->getLogicalDevice().getLogicalDevice().createSampler(&samplerInfo, nullptr, &textureSampler) != vk::Result::eSuccess) {
+			throw std::runtime_error("Failed to create texture sampler!");
+		}
+	}
+
+	const vk::Sampler& gibvk::vulkan::drawing::textureimages::TextureSampler::getTextureSampler() const
+	{
+		return textureSampler;
+	}
+
+	std::unique_ptr<TextureSampler> createTextureSampler()
+	{
+		return std::make_unique<TextureSampler>();
+	}
 }

@@ -50,6 +50,8 @@ namespace gibvk::graphics {
 
 		static void framebufferResizedCallback(GLFWwindow* window, int width, int height);
 
+		static vk::ImageView createImageView(vk::Image image, vk::Format format);
+
 	private:
 		static std::unique_ptr<Graphics> graphics;
 

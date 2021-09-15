@@ -103,6 +103,9 @@ namespace gibvk::graphics {
 	{
 		cleanupSwapchain();
 
+		logicalDevice->getLogicalDevice().destroySampler(vulkan::drawing::get()->getTextureSampler().getTextureSampler());
+		logicalDevice->getLogicalDevice().destroyImageView(vulkan::drawing::get()->getTextureImageView().getTextureImageView());
+
 		logicalDevice->getLogicalDevice().destroyImage(vulkan::drawing::get()->getTextureImage().getTextureImage());
 		logicalDevice->getLogicalDevice().freeMemory(vulkan::drawing::get()->getTextureImage().getTextureImageMemory());
 
@@ -243,6 +246,19 @@ namespace gibvk::graphics {
 	{
 		auto app = reinterpret_cast<Graphics*>(glfwGetWindowUserPointer(window));
 		app->framebufferResized = true;
+	}
+
+	vk::ImageView Graphics::createImageView(vk::Image image, vk::Format format)
+	{
+		auto viewInfo = vk::ImageViewCreateInfo({}, image, vk::ImageViewType::e2D, format, {}, { vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1 });
+
+		vk::ImageView imageView;
+
+		if (graphics::get()->getLogicalDevice().getLogicalDevice().createImageView(&viewInfo, nullptr, &imageView) != vk::Result::eSuccess) {
+			throw std::runtime_error("Failed to create texture image view!");
+		}
+
+		return imageView;
 	}
 
 	Graphics* get()

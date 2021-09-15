@@ -23,6 +23,30 @@ namespace gibvk::vulkan::drawing::textureimages {
 	};
 
 	std::unique_ptr<TextureImage> createTextureImage();
+
+	class TextureImageView {
+	public:
+		TextureImageView();
+
+		[[nodiscard]] const vk::ImageView& getTextureImageView() const;
+
+	private:
+		vk::ImageView textureImageView;
+	};
+
+	std::unique_ptr<TextureImageView> createTextureImageView();
+
+	class TextureSampler {
+	public:
+		TextureSampler();
+
+		[[nodiscard]] const vk::Sampler& getTextureSampler() const;
+
+	private:
+		vk::Sampler textureSampler;
+	};
+
+	std::unique_ptr<TextureSampler> createTextureSampler();
 }
 
 #endif // !TEXTURE_IMAGE_CLASS

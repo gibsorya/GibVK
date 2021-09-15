@@ -23,6 +23,8 @@ namespace gibvk::vulkan::drawing {
 		if (!isSwapchainCleaning) {
 			commandPool = commandpools::createCommandPool();
 			textureImage = textureimages::createTextureImage();
+			textureImageView = textureimages::createTextureImageView();
+			textureSampler = textureimages::createTextureSampler();
 		}
 		renderer::get()->initialize(isSwapchainCleaning);
 		commandBuffer = commandbuffers::createCommandBuffer();
@@ -160,6 +162,24 @@ namespace gibvk::vulkan::drawing {
 		}
 
 		return *textureImage;
+	}
+
+	const textureimages::TextureImageView& gibvk::vulkan::drawing::Drawing::getTextureImageView() const
+	{
+		if (textureImageView == nullptr) {
+			throw std::runtime_error("Texture image view has not been initialized");
+		}
+
+		return *textureImageView;
+	}
+
+	const textureimages::TextureSampler& gibvk::vulkan::drawing::Drawing::getTextureSampler() const
+	{
+		if (textureSampler == nullptr) {
+			throw std::runtime_error("Texture sampler has not been initialized");
+		}
+
+		return *textureSampler;
 	}
 
 	const size_t& Drawing::getCurrentFrame() const

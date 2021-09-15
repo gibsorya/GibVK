@@ -39,7 +39,10 @@ namespace gibvk::vulkan::devices {
 			swapchainAdequate = !swapchainSupport.formats.empty() && !swapchainSupport.presentModes.empty();
 		}
 
-		return indices.isComplete() && extensionsSupported && swapchainAdequate;
+		vk::PhysicalDeviceFeatures supportedFeatures;
+		device.getFeatures(&supportedFeatures);
+
+		return indices.isComplete() && extensionsSupported && swapchainAdequate && supportedFeatures.samplerAnisotropy;
 	}
 
 	bool PhysicalDevices::checkDeviceExtensionSupport(vk::PhysicalDevice device)

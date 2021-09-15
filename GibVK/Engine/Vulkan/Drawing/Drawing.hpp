@@ -27,6 +27,8 @@ namespace gibvk::vulkan::drawing {
 		[[nodiscard]] const commandpools::CommandPool& getCommandPool() const;
 		[[nodiscard]] const commandbuffers::CommandBuffer& getCommandBuffer() const;
 		[[nodiscard]] const textureimages::TextureImage& getTextureImage() const;
+		[[nodiscard]] const textureimages::TextureImageView& getTextureImageView() const;
+		[[nodiscard]] const textureimages::TextureSampler& getTextureSampler() const;
 		//[[nodiscard]] const syncobjects::SyncObjects& getSyncObjects() const;
 		[[nodiscard]] const size_t& getCurrentFrame() const;
 		[[nodiscard]] const std::vector<VkFence>& getImagesInFlight() const;
@@ -49,6 +51,8 @@ namespace gibvk::vulkan::drawing {
 		std::unique_ptr<commandpools::CommandPool> commandPool{};
 		std::unique_ptr<commandbuffers::CommandBuffer> commandBuffer{};
 		std::unique_ptr<textureimages::TextureImage> textureImage{};
+		std::unique_ptr<textureimages::TextureImageView> textureImageView{};
+		std::unique_ptr<textureimages::TextureSampler> textureSampler{};
 		//std::unique_ptr<syncobjects::SyncObjects> syncObjects{};
 	};
 
