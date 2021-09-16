@@ -2,6 +2,7 @@
 #define DRAWING_CLASS
 
 #include <vulkan/vulkan.hpp>
+#include <tiny_obj_loader.h>
 
 #include "Framebuffers/Framebuffer.hpp"
 #include "CommandPools/CommandPool.hpp"
@@ -22,8 +23,10 @@ namespace gibvk::vulkan::drawing {
 		void initialize();
 		void recreateSwapchain();
 		void draw();
+		void loadModel();
 		void createSyncObjects();
 		void updateUniformBuffer(uint32_t currentImage);
+
 
 		[[nodiscard]] const framebuffers::Framebuffer& getFramebuffer() const;
 		[[nodiscard]] const commandpools::CommandPool& getCommandPool() const;

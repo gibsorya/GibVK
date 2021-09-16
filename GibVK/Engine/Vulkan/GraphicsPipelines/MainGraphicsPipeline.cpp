@@ -31,8 +31,8 @@ namespace gibvk::vulkan::pipelines {
 		vk::PipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo, fragShaderStageInfo };
 
 		//vertexInput = vertexinputs::createVertexInput();
-		auto bindingDescription = renderer::buffers::vertexbuffers::Vertex::getBindingDescription();
-		auto attributeDescriptions = renderer::buffers::vertexbuffers::Vertex::getAttributeDescriptions();
+		auto bindingDescription = Vertex::getBindingDescription();
+		auto attributeDescriptions = Vertex::getAttributeDescriptions();
 
 		auto vertexInputInfo = vk::PipelineVertexInputStateCreateInfo({}, 1, &bindingDescription, static_cast<uint32_t>(attributeDescriptions.size()), attributeDescriptions.data());
 

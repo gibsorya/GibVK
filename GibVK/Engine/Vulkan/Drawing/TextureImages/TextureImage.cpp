@@ -7,7 +7,7 @@ namespace gibvk::vulkan::drawing::textureimages {
 	TextureImage::TextureImage()
 	{
 		int texWidth, texHeight, texChannels;
-		stbi_uc* pixels = stbi_load("textures/texture.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+		stbi_uc* pixels = stbi_load(graphics::TEXTURE_PATH.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 		vk::DeviceSize imageSize = texWidth * texHeight * 4;
 
 		if (!pixels) {
@@ -34,39 +34,6 @@ namespace gibvk::vulkan::drawing::textureimages {
 		graphics::get()->getLogicalDevice().getLogicalDevice().destroyBuffer(stagingBuffer);
 		graphics::get()->getLogicalDevice().getLogicalDevice().freeMemory(stagingBufferMemory);
 	}
-
-	
-	//void TextureImage::transitionImageLayout(vk::Image image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout)
-	//{
-	//	vk::CommandBuffer commandBuffer = renderer::buffers::beginSingleTimeCommands();
-	//	
-	//	auto barrier = vk::ImageMemoryBarrier(vk::AccessFlagBits::eNoneKHR, vk::AccessFlagBits::eNoneKHR, oldLayout, newLayout, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, image, {vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1});
-
-	//	vk::PipelineStageFlags sourceStage;
-	//	vk::PipelineStageFlags destinationStage;
-
-	//	if (oldLayout == vk::ImageLayout::eUndefined && newLayout == vk::ImageLayout::eTransferDstOptimal) {
-	//		barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
-	//		barrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
-
-	//		sourceStage = vk::PipelineStageFlagBits::eTopOfPipe;
-	//		destinationStage = vk::PipelineStageFlagBits::eTransfer;
-	//	}
-	//	else if (oldLayout == vk::ImageLayout::eTransferDstOptimal && newLayout == vk::ImageLayout::eShaderReadOnlyOptimal) {
-	//		barrier.srcAccessMask = vk::AccessFlagBits::eTransferWrite;
-	//		barrier.dstAccessMask = vk::AccessFlagBits::eShaderRead;
-
-	//		sourceStage = vk::PipelineStageFlagBits::eTransfer;
-	//		destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
-	//	}
-	//	else {
-	//		throw std::invalid_argument("Unsupported layout transition!");
-	//	}
-
-	//	commandBuffer.pipelineBarrier(sourceStage, destinationStage, {}, 0, nullptr, 0, nullptr, 1, &barrier);
-
-	//	renderer::buffers::endSingleTimeCommands(commandBuffer);
-	//}
 
 	void TextureImage::copyBufferToImage(vk::Buffer buffer, vk::Image image, uint32_t width, uint32_t height)
 	{
@@ -97,7 +64,7 @@ namespace gibvk::vulkan::drawing::textureimages {
 
 	TextureImageView::TextureImageView() 
 	{
-		textureImageView = graphics::get()->createImageView(drawing::get()->getTextureImage().getTextureImage(), vk::Format::eR8G8B8A8Srgb, vk::ImageAspectFlagBits::eDepth);
+		textureImageView = graphics::get()->createImageView(drawing::get()->getTextureImage().getTextureImage(), vk::Format::eR8G8B8A8Srgb, vk::ImageAspectFlagBits::eColor);
 	}
 
 	const vk::ImageView& gibvk::vulkan::drawing::textureimages::TextureImageView::getTextureImageView() const

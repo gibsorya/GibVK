@@ -1,9 +1,14 @@
 #include "VertexBuffer.hpp"
 #include "../../../Graphics.hpp"
+#include "../../Renderer.hpp"
 #include "../Buffers.hpp"
 
+
+
 namespace gibvk::renderer::buffers::vertexbuffers {
+	
 	struct Vertex vertex;
+	std::vector<Vertex> vertices;
 
 	VertexBuffer::VertexBuffer()
 	{
@@ -23,6 +28,11 @@ namespace gibvk::renderer::buffers::vertexbuffers {
 		graphics::get()->getLogicalDevice().getLogicalDevice().destroyBuffer(stagingBuffer);
 		graphics::get()->getLogicalDevice().getLogicalDevice().freeMemory(stagingBufferMemory, nullptr);
 	}
+
+	/*const std::vector<Vertex>& VertexBuffer::getVertices() const
+	{
+		return vertices;
+	}*/
 
 	const vk::Buffer& VertexBuffer::getVertexBuffer() const
 	{

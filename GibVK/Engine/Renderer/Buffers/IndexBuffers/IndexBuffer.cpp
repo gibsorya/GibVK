@@ -3,6 +3,8 @@
 #include "../Buffers.hpp"
 
 namespace gibvk::renderer::buffers::indexbuffers {
+	std::vector<uint32_t> indices;
+
 	IndexBuffer::IndexBuffer()
 	{
 		vk::DeviceSize bufferSize = sizeof(indices[0]) * indices.size();
@@ -23,6 +25,11 @@ namespace gibvk::renderer::buffers::indexbuffers {
 		graphics::get()->getLogicalDevice().getLogicalDevice().destroyBuffer(stagingBuffer);
 		graphics::get()->getLogicalDevice().getLogicalDevice().freeMemory(stagingBufferMemory);
 	}
+
+	/*const std::vector<uint32_t>& IndexBuffer::getIndices() const
+	{
+		return indices;
+	}*/
 
 	const vk::Buffer& IndexBuffer::getIndexBuffer() const
 	{

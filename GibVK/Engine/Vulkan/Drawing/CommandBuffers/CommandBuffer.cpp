@@ -40,7 +40,7 @@ namespace gibvk::vulkan::drawing::commandbuffers {
 
 			commandBuffers[i].bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-			commandBuffers[i].bindIndexBuffer(renderer::buffers::get()->getIndexBuffer().getIndexBuffer(), 0, vk::IndexType::eUint16);
+			commandBuffers[i].bindIndexBuffer(renderer::buffers::get()->getIndexBuffer().getIndexBuffer(), 0, vk::IndexType::eUint32);
 
 			commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelines::get()->getPipelineLayout(), 0, 1, &renderer::buffers::get()->getDescriptorSets().getDescriptorSets().at(i), 0, nullptr);
 			commandBuffers[i].drawIndexed(static_cast<uint32_t>(renderer::buffers::indexbuffers::indices.size()), 1, 0, 0, 0);

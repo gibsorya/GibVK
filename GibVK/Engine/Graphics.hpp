@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_CLASS
 #define GRAPHICS_CLASS
 
+
 #include "Vulkan/Window.hpp"
 #include "Vulkan/Instance.hpp"
 #include "Vulkan/Surface.hpp"
@@ -18,9 +19,14 @@
 #include "Vulkan/Drawing/Drawing.hpp"
 #include "Application.hpp"
 
+
 #include <memory>
 #include <vulkan/vulkan.hpp>
 namespace gibvk::graphics {
+
+	const std::string MODEL_PATH = "models/viking_room.obj";
+	const std::string TEXTURE_PATH = "textures/viking_room.png";
+
 	class Graphics {
 	public:
 		Graphics() = default;
