@@ -69,11 +69,15 @@ namespace gibvk::graphics {
 		imageViews = vulkan::swapchains::createImageViews();
 		renderPass = vulkan::renderpasses::createRenderPass();
 		vulkan::pipelines::get()->initialize();
-		vulkan::drawing::get()->initialize(true);
+		vulkan::drawing::get()->recreateSwapchain();
 	}
 
 	void Graphics::cleanupSwapchain()
 	{
+		logicalDevice->getLogicalDevice().destroyImageView(vulkan::drawing::get()->getDepthResources().getDepthImageView());
+		logicalDevice->getLogicalDevice().destroyImage(vulkan::drawing::get()->getDepthResources().getDepthImage());
+		logicalDevice->getLogicalDevice().freeMemory(vulkan::drawing::get()->getDepthResources().getDepthImageMemory());
+
 		for (auto framebuffer : vulkan::drawing::get()->getFramebuffer().getSwapchainFramebuffers()) {
 			logicalDevice->getLogicalDevice().destroyFramebuffer(framebuffer);
 		}
@@ -248,9 +252,9 @@ namespace gibvk::graphics {
 		app->framebufferResized = true;
 	}
 
-	vk::ImageView Graphics::createImageView(vk::Image image, vk::Format format)
+	vk::ImageView Graphics::createImageView(vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags)
 	{
-		auto viewInfo = vk::ImageViewCreateInfo({}, image, vk::ImageViewType::e2D, format, {}, { vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1 });
+		auto viewInfo = vk::ImageViewCreateInfo({}, image, vk::ImageViewType::e2D, format, {}, { aspectFlags, 0, 1, 0, 1 });
 
 		vk::ImageView imageView;
 

@@ -44,6 +44,7 @@ namespace gibvk::vulkan::pipelines {
 		multisampling = multisampling::createMultisampling();
 		colorBlendAttachment = colorblends::createColorBlendAttachment();
 		colorBlending = colorblends::createColorBlending();
+		depthStencil = depth::createDepthStencil();
 
 		pipelineLayoutInfo = vk::PipelineLayoutCreateInfo({}, 1, &renderer::buffers::get()->getDescriptorSetLayout().getDescriptorSetLayout(), 0, nullptr);
 
@@ -52,7 +53,7 @@ namespace gibvk::vulkan::pipelines {
 		}
 
 		auto pipelineInfo = vk::GraphicsPipelineCreateInfo({}, 2, shaderStages, &vertexInputInfo, &inputAssembly->getInputAssemblyInfo(),
-			nullptr, &viewportState->getViewportState(), &rasterizer->getRasterizer(), &multisampling->getMultisampling(), nullptr, &colorBlending->getColorBlending(), 
+			nullptr, &viewportState->getViewportState(), &rasterizer->getRasterizer(), &multisampling->getMultisampling(), &depthStencil->getDepthStencil(), &colorBlending->getColorBlending(), 
 			nullptr, pipelineLayout, graphics::get()->getRenderPass().getRenderPass(), 0, VK_NULL_HANDLE, -1);
 
 		if (graphics::get()->getLogicalDevice().getLogicalDevice().createGraphicsPipelines(VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != vk::Result::eSuccess) {
@@ -184,6 +185,15 @@ namespace gibvk::vulkan::pipelines {
 		}
 
 		return *colorBlending;
+	}
+
+	const depth::DepthStencilState& MainGraphicsPipeline::getDepthStencil() const
+	{
+		if (depthStencil == nullptr) {
+			throw std::runtime_error("Depth stencil has not been initialied");
+		}
+
+		return *depthStencil;
 	}
 
 	const vk::PipelineShaderStageCreateInfo& MainGraphicsPipeline::getVertShaderInfo() const

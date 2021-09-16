@@ -7,6 +7,7 @@
 #include "CommandPools/CommandPool.hpp"
 #include "CommandBuffers/CommandBuffer.hpp"
 #include "TextureImages/TextureImage.hpp"
+#include "DepthResources/DepthResources.hpp"
 //#include "SyncObjects/SyncObjects.hpp"
 
 namespace gibvk::vulkan::drawing {
@@ -18,7 +19,8 @@ namespace gibvk::vulkan::drawing {
 
 		static Drawing* _get();
 
-		void initialize(bool isSwapchainCleaning = false);
+		void initialize();
+		void recreateSwapchain();
 		void draw();
 		void createSyncObjects();
 		void updateUniformBuffer(uint32_t currentImage);
@@ -29,6 +31,7 @@ namespace gibvk::vulkan::drawing {
 		[[nodiscard]] const textureimages::TextureImage& getTextureImage() const;
 		[[nodiscard]] const textureimages::TextureImageView& getTextureImageView() const;
 		[[nodiscard]] const textureimages::TextureSampler& getTextureSampler() const;
+		[[nodiscard]] const depthresources::DepthResources& getDepthResources() const;
 		//[[nodiscard]] const syncobjects::SyncObjects& getSyncObjects() const;
 		[[nodiscard]] const size_t& getCurrentFrame() const;
 		[[nodiscard]] const std::vector<VkFence>& getImagesInFlight() const;
@@ -53,10 +56,14 @@ namespace gibvk::vulkan::drawing {
 		std::unique_ptr<textureimages::TextureImage> textureImage{};
 		std::unique_ptr<textureimages::TextureImageView> textureImageView{};
 		std::unique_ptr<textureimages::TextureSampler> textureSampler{};
+		std::unique_ptr<depthresources::DepthResources> depthResources{};
 		//std::unique_ptr<syncobjects::SyncObjects> syncObjects{};
 	};
 
 	void createImage(uint32_t width, uint32_t height, vk::Format format, vk::ImageTiling tiling, vk::ImageUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Image& image, vk::DeviceMemory& imageMemory);
+	vk::Format findSupportedFormat(const std::vector<vk::Format>& candidates, vk::ImageTiling tiling, vk::FormatFeatureFlags features);
+	bool hasStencilComponent(vk::Format format);
+	void transitionImageLayout(vk::Image image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout);
 
 	Drawing* get();
 }

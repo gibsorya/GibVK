@@ -171,9 +171,11 @@
     <ClCompile Include="Engine\Vulkan\Devices\QueueFamilies.cpp" />
     <ClCompile Include="Engine\Vulkan\Drawing\CommandBuffers\CommandBuffer.cpp" />
     <ClCompile Include="Engine\Vulkan\Drawing\CommandPools\CommandPool.cpp" />
+    <ClCompile Include="Engine\Vulkan\Drawing\DepthResources\DepthResources.cpp" />
     <ClCompile Include="Engine\Vulkan\Drawing\Drawing.cpp" />
     <ClCompile Include="Engine\Vulkan\Drawing\Framebuffers\Framebuffer.cpp" />
     <ClCompile Include="Engine\Vulkan\GraphicsPipelines\ColorBlenders\ColorBlend.cpp" />
+    <ClCompile Include="Engine\Vulkan\GraphicsPipelines\DepthStencilState\DepthStencilState.cpp" />
     <ClCompile Include="Engine\Vulkan\GraphicsPipelines\InputAssemblies\InputAssembly.cpp" />
     <ClCompile Include="Engine\Vulkan\GraphicsPipelines\MainGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\Vulkan\GraphicsPipelines\Multisamplers\Multisampling.cpp" />
@@ -211,9 +213,11 @@
     <ClInclude Include="Engine\Vulkan\Devices\QueueFamilies.hpp" />
     <ClInclude Include="Engine\Vulkan\Drawing\CommandBuffers\CommandBuffer.hpp" />
     <ClInclude Include="Engine\Vulkan\Drawing\CommandPools\CommandPool.hpp" />
+    <ClInclude Include="Engine\Vulkan\Drawing\DepthResources\DepthResources.hpp" />
     <ClInclude Include="Engine\Vulkan\Drawing\Drawing.hpp" />
     <ClInclude Include="Engine\Vulkan\Drawing\Framebuffers\Framebuffer.hpp" />
     <ClInclude Include="Engine\Vulkan\GraphicsPipelines\ColorBlenders\ColorBlend.hpp" />
+    <ClInclude Include="Engine\Vulkan\GraphicsPipelines\DepthStencilState\DepthStencilState.hpp" />
     <ClInclude Include="Engine\Vulkan\GraphicsPipelines\InputAssemblies\InputAssembly.hpp" />
     <ClInclude Include="Engine\Vulkan\GraphicsPipelines\MainGraphicsPipeline.hpp" />
     <ClInclude Include="Engine\Vulkan\GraphicsPipelines\Multisamplers\Multisampling.hpp" />

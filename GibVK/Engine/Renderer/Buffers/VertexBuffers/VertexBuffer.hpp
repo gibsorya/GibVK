@@ -6,7 +6,7 @@
 
 namespace gibvk::renderer::buffers::vertexbuffers {
 	struct Vertex {
-		glm::vec2 pos;
+		glm::vec3 pos;
 		glm::vec3 color;
 		glm::vec2 texCoord;
 
@@ -19,7 +19,7 @@ namespace gibvk::renderer::buffers::vertexbuffers {
 
 		static std::array<vk::VertexInputAttributeDescription, 3> getAttributeDescriptions() {
 			auto attributeDescriptions = std::array<vk::VertexInputAttributeDescription, 3>{ {
-				{0, 0, vk::Format::eR32G32Sfloat, offsetof(Vertex, pos)},
+				{0, 0, vk::Format::eR32G32B32Sfloat, offsetof(Vertex, pos)},
 				{ 1, 0, vk::Format::eR32G32B32Sfloat, offsetof(Vertex, color) },
 				{ 2, 0, vk::Format::eR32G32Sfloat, offsetof(Vertex, texCoord) },
 				} };
@@ -31,11 +31,18 @@ namespace gibvk::renderer::buffers::vertexbuffers {
 	};
 
 	const std::vector<Vertex> vertices = {
-		{{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
-		{{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-		{{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
-		{{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}}
+		{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+		{{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+		{{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+		{{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
+
+		{{-0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+		{{0.5f, -0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+		{{0.5f, 0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+		{{-0.5f, 0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}}
 	};
+
+
 
 	class VertexBuffer {
 	public:

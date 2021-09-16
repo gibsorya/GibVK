@@ -17,21 +17,26 @@ namespace gibvk::vulkan::drawing {
 		return drawing.get();
 	}
 
-	void Drawing::initialize(bool isSwapchainCleaning)
+	void Drawing::initialize()
 	{
+		commandPool = commandpools::createCommandPool();
+		depthResources = depthresources::createDepthResources();
 		framebuffer = framebuffers::createFramebuffers();
-		if (!isSwapchainCleaning) {
-			commandPool = commandpools::createCommandPool();
-			textureImage = textureimages::createTextureImage();
-			textureImageView = textureimages::createTextureImageView();
-			textureSampler = textureimages::createTextureSampler();
-		}
-		renderer::get()->initialize(isSwapchainCleaning);
+		textureImage = textureimages::createTextureImage();
+		textureImageView = textureimages::createTextureImageView();
+		textureSampler = textureimages::createTextureSampler();
+		renderer::get()->initialize();
 		commandBuffer = commandbuffers::createCommandBuffer();
+		createSyncObjects();
 
-		if (!isSwapchainCleaning) {
-			createSyncObjects();
-		}
+	}
+
+	void Drawing::recreateSwapchain()
+	{
+		depthResources = depthresources::createDepthResources();
+		framebuffer = framebuffers::createFramebuffers();
+		renderer::get()->recreateSwapchain();
+		commandBuffer = commandbuffers::createCommandBuffer();
 	}
 
 	void Drawing::draw()
@@ -182,6 +187,15 @@ namespace gibvk::vulkan::drawing {
 		return *textureSampler;
 	}
 
+	const depthresources::DepthResources& gibvk::vulkan::drawing::Drawing::getDepthResources() const
+	{
+		if (depthResources == nullptr) {
+			throw std::runtime_error("Depth resources have not been initialized");
+		}
+
+		return *depthResources;
+	}
+
 	const size_t& Drawing::getCurrentFrame() const
 	{
 		return currentFrame;
@@ -226,6 +240,75 @@ namespace gibvk::vulkan::drawing {
 		}
 
 		graphics::get()->getLogicalDevice().getLogicalDevice().bindImageMemory(image, imageMemory, 0);
+	}
+
+	vk::Format findSupportedFormat(const std::vector<vk::Format>& candidates, vk::ImageTiling tiling, vk::FormatFeatureFlags features) {
+		for (vk::Format format : candidates) {
+			vk::FormatProperties props;
+			graphics::get()->getPhysicalDevice().getPhysicalDevice().getFormatProperties(format, &props);
+
+			if (tiling == vk::ImageTiling::eLinear && (props.linearTilingFeatures & features) == features) {
+				return format;
+			}
+			else if (tiling == vk::ImageTiling::eOptimal && (props.optimalTilingFeatures & features) == features) {
+				return format;
+			}
+
+			throw std::runtime_error("Failed to find supported format!");
+		}
+	}
+
+	bool hasStencilComponent(vk::Format format) {
+		return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint;
+	}
+
+	void transitionImageLayout(vk::Image image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout) {
+		vk::CommandBuffer commandBuffer = renderer::buffers::beginSingleTimeCommands();
+
+		auto barrier = vk::ImageMemoryBarrier(vk::AccessFlagBits::eNoneKHR, vk::AccessFlagBits::eNoneKHR, oldLayout, newLayout, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, image, { vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1 });
+
+		vk::PipelineStageFlags sourceStage;
+		vk::PipelineStageFlags destinationStage;
+
+		if (newLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal) {
+			barrier.subresourceRange.aspectMask = vk::ImageAspectFlagBits::eDepth;
+
+			if (hasStencilComponent(format)) {
+				barrier.subresourceRange.aspectMask |= vk::ImageAspectFlagBits::eStencil;
+			}
+		}
+		else {
+			barrier.subresourceRange.aspectMask = vk::ImageAspectFlagBits::eColor;
+		}
+
+		if (oldLayout == vk::ImageLayout::eUndefined && newLayout == vk::ImageLayout::eTransferDstOptimal) {
+			barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
+			barrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
+
+			sourceStage = vk::PipelineStageFlagBits::eTopOfPipe;
+			destinationStage = vk::PipelineStageFlagBits::eTransfer;
+		}
+		else if (oldLayout == vk::ImageLayout::eTransferDstOptimal && newLayout == vk::ImageLayout::eShaderReadOnlyOptimal) {
+			barrier.srcAccessMask = vk::AccessFlagBits::eTransferWrite;
+			barrier.dstAccessMask = vk::AccessFlagBits::eShaderRead;
+
+			sourceStage = vk::PipelineStageFlagBits::eTransfer;
+			destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
+		}
+		else if(oldLayout == vk::ImageLayout::eUndefined && newLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal) {
+			barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
+			barrier.dstAccessMask = vk::AccessFlagBits::eDepthStencilAttachmentRead | vk::AccessFlagBits::eDepthStencilAttachmentWrite;
+
+			sourceStage = vk::PipelineStageFlagBits::eTopOfPipe;
+			destinationStage = vk::PipelineStageFlagBits::eEarlyFragmentTests;
+		} 
+		else {
+			throw std::invalid_argument("Unsupported layout transition!");
+		}
+
+		commandBuffer.pipelineBarrier(sourceStage, destinationStage, {}, 0, nullptr, 0, nullptr, 1, &barrier);
+
+		renderer::buffers::endSingleTimeCommands(commandBuffer);
 	}
 
 	Drawing* get()

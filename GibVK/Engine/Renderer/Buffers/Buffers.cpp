@@ -12,13 +12,17 @@ namespace gibvk::renderer::buffers {
 		return buffer.get();
 	}
 
-	void Buffers::initialize(bool recreatingSwapchain)
+	void Buffers::initialize()
 	{
-		if (!recreatingSwapchain) {
-			vertexBuffer = vertexbuffers::createVertexBuffer();
-			indexBuffer = indexbuffers::createIndexBuffer();
-		}
+		vertexBuffer = vertexbuffers::createVertexBuffer();
+		indexBuffer = indexbuffers::createIndexBuffer();
+		uniformBuffer = uniformbuffers::createUniformBuffers();
+		descriptorPool = descriptors::createDescriptorPool();
+		descriptorSets = descriptors::createDescriptorSets();
+	}
 
+	void Buffers::recreateSwapchain()
+	{
 		uniformBuffer = uniformbuffers::createUniformBuffers();
 		descriptorPool = descriptors::createDescriptorPool();
 		descriptorSets = descriptors::createDescriptorSets();

@@ -6,11 +6,12 @@ namespace gibvk::vulkan::drawing::framebuffers {
 		swapchainFramebuffer.resize(graphics::get()->getImageViews().getSwapchainImageViews().size());
 
 		for (size_t i = 0; i < graphics::get()->getImageViews().getSwapchainImageViews().size(); i++) {
-			vk::ImageView attachments[] = {
+			/*vk::ImageView attachments[] = {
 				graphics::get()->getImageViews().getSwapchainImageViews().at(i)
-			};
-			
-			auto framebufferInfo = vk::FramebufferCreateInfo({}, graphics::get()->getRenderPass().getRenderPass(), 1, attachments,
+			};*/
+			std::array<vk::ImageView, 2> attachments = { graphics::get()->getImageViews().getSwapchainImageViews().at(i), drawing::get()->getDepthResources().getDepthImageView() };
+
+			auto framebufferInfo = vk::FramebufferCreateInfo({}, graphics::get()->getRenderPass().getRenderPass(), static_cast<uint32_t>(attachments.size()), attachments.data(),
 				graphics::get()->getSwapchain().getSwapchainExtent().width, graphics::get()->getSwapchain().getSwapchainExtent().height,
 				1);
 

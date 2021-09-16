@@ -22,10 +22,14 @@ namespace gibvk::vulkan::drawing::commandbuffers {
 				throw std::runtime_error("Failed to begin recording command buffer!");
 			}
 
-			vk::ClearValue clearColor = { vk::ClearColorValue(std::array<float, 4>{0.0f, 0.0f, 0.0f, 1.0f}) };
+			//vk::ClearValue clearColor = { vk::ClearColorValue(std::array<float, 4>{0.0f, 0.0f, 0.0f, 1.0f}) };
+
+			std::array<vk::ClearValue, 2> clearValues{};
+			clearValues.at(0).color = { std::array<float, 4>{0.0f, 0.0f, 0.0f, 1.0f} };
+			clearValues.at(1).depthStencil = { {1.0f, 0} };
 
 			auto renderPassInfo = vk::RenderPassBeginInfo(graphics::get()->getRenderPass().getRenderPass(), drawing::get()->getFramebuffer().getSwapchainFramebuffers().at(i),
-				{ {0, 0}, graphics::get()->getSwapchain().getSwapchainExtent() }, 1, &clearColor);
+				{ {0, 0}, graphics::get()->getSwapchain().getSwapchainExtent() }, static_cast<uint32_t>(clearValues.size()), clearValues.data());
 
 			commandBuffers[i].beginRenderPass(&renderPassInfo, vk::SubpassContents::eInline);
 

@@ -15,9 +15,14 @@ namespace gibvk::renderer {
 		return renderer.get();
 	}
 
-	void Renderer::initialize(bool recreatingSwapchain)
+	void Renderer::initialize()
 	{
-		buffers::get()->initialize(recreatingSwapchain);
+		buffers::get()->initialize();
+	}
+
+	void Renderer::recreateSwapchain()
+	{
+		buffers::get()->recreateSwapchain();
 	}
 
 	Renderer* get()

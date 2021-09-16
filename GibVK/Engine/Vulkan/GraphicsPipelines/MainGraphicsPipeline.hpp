@@ -12,6 +12,7 @@
 #include "Rasterizers/Rasterizer.hpp"
 #include "Multisamplers/Multisampling.hpp"
 #include "ColorBlenders/ColorBlend.hpp"
+#include "DepthStencilState/DepthStencilState.hpp"
 
 namespace gibvk::vulkan::pipelines {
 	class MainGraphicsPipeline {
@@ -36,6 +37,7 @@ namespace gibvk::vulkan::pipelines {
 		[[nodiscard]] const multisampling::Multisampling& getMultisampling() const;
 		[[nodiscard]] const colorblends::ColorBlendAttachment& getColorBlendAttachment() const;
 		[[nodiscard]] const colorblends::ColorBlending& getColorBlending() const;
+		[[nodiscard]] const depth::DepthStencilState& getDepthStencil() const;
 
 		[[nodiscard]] const vk::PipelineShaderStageCreateInfo& getVertShaderInfo() const;
 		[[nodiscard]] const vk::PipelineShaderStageCreateInfo& getFragShaderInfo() const;
@@ -64,7 +66,8 @@ namespace gibvk::vulkan::pipelines {
 		std::unique_ptr<rasterizers::Rasterizer> rasterizer{};
 		std::unique_ptr<multisampling::Multisampling> multisampling{};
 		std::unique_ptr<colorblends::ColorBlendAttachment> colorBlendAttachment{};
-		std::unique_ptr <colorblends::ColorBlending> colorBlending{};
+		std::unique_ptr<colorblends::ColorBlending> colorBlending{};
+		std::unique_ptr<depth::DepthStencilState> depthStencil{};
 	};
 
 		MainGraphicsPipeline* get();

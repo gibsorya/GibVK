@@ -12,7 +12,8 @@ namespace gibvk::renderer {
 
 		static Renderer* _get();
 
-		void initialize(bool recreatingSwapchain = false);
+		void initialize();
+		void recreateSwapchain();
 
 	private:
 		static std::unique_ptr<Renderer> renderer;

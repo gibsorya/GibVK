@@ -11,7 +11,7 @@ namespace gibvk::vulkan::drawing::textureimages {
 		TextureImage();
 
 
-		void transitionImageLayout(vk::Image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout);
+		//void transitionImageLayout(vk::Image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout);
 		void copyBufferToImage(vk::Buffer buffer, vk::Image image, uint32_t width, uint32_t height);
 
 		[[nodiscard]] const vk::Image& getTextureImage() const;

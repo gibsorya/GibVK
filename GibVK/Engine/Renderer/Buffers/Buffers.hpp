@@ -15,7 +15,8 @@ namespace gibvk::renderer::buffers {
 
 		static Buffers* _get();
 
-		void initialize(bool recreatingSwapchain = false);
+		void initialize();
+		void recreateSwapchain();
 		void initDescriptor();
 		uint32_t findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties);
 		void createBuffer(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Buffer& buffer, vk::DeviceMemory& bufferMemory);
