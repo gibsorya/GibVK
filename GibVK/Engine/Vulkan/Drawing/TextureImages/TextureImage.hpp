@@ -13,13 +13,16 @@ namespace gibvk::vulkan::drawing::textureimages {
 
 		//void transitionImageLayout(vk::Image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout);
 		void copyBufferToImage(vk::Buffer buffer, vk::Image image, uint32_t width, uint32_t height);
+		void generateMipmaps(vk::Image image, vk::Format imageFormat, int32_t texWidth, int32_t texHeight, int32_t mipLevels);
 
 		[[nodiscard]] const vk::Image& getTextureImage() const;
 		[[nodiscard]] const vk::DeviceMemory& getTextureImageMemory() const;
+		[[nodiscard]] const uint32_t& getMipLevels() const;
 
 	private:
 		vk::Image textureImage;
 		vk::DeviceMemory textureImageMemory;
+		uint32_t mipLevels;
 	};
 
 	std::unique_ptr<TextureImage> createTextureImage();

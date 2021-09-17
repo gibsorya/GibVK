@@ -252,9 +252,9 @@ namespace gibvk::graphics {
 		app->framebufferResized = true;
 	}
 
-	vk::ImageView Graphics::createImageView(vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags)
+	vk::ImageView Graphics::createImageView(vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags, uint32_t mipLevels)
 	{
-		auto viewInfo = vk::ImageViewCreateInfo({}, image, vk::ImageViewType::e2D, format, {}, { aspectFlags, 0, 1, 0, 1 });
+		auto viewInfo = vk::ImageViewCreateInfo({}, image, vk::ImageViewType::e2D, format, {}, { aspectFlags, 0, mipLevels, 0, 1 });
 
 		vk::ImageView imageView;
 

@@ -6,10 +6,10 @@ namespace gibvk::vulkan::drawing::depthresources {
 	{
 		vk::Format depthFormat = findDepthFormat();
 
-		createImage(graphics::get()->getSwapchain().getSwapchainExtent().width, graphics::get()->getSwapchain().getSwapchainExtent().height, depthFormat, vk::ImageTiling::eOptimal, vk::ImageUsageFlagBits::eDepthStencilAttachment, vk::MemoryPropertyFlagBits::eDeviceLocal, depthImage, depthImageMemory);
-		depthImageView = graphics::get()->createImageView(depthImage, depthFormat, vk::ImageAspectFlagBits::eDepth);
+		createImage(graphics::get()->getSwapchain().getSwapchainExtent().width, graphics::get()->getSwapchain().getSwapchainExtent().height, 1, depthFormat, vk::ImageTiling::eOptimal, vk::ImageUsageFlagBits::eDepthStencilAttachment, vk::MemoryPropertyFlagBits::eDeviceLocal, depthImage, depthImageMemory);
+		depthImageView = graphics::get()->createImageView(depthImage, depthFormat, vk::ImageAspectFlagBits::eDepth, 1);
 
-		drawing::transitionImageLayout(depthImage, depthFormat, vk::ImageLayout::eUndefined, vk::ImageLayout::eDepthStencilAttachmentOptimal);
+		drawing::transitionImageLayout(depthImage, depthFormat, vk::ImageLayout::eUndefined, vk::ImageLayout::eDepthStencilAttachmentOptimal, 1);
 
 	}
 

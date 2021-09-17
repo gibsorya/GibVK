@@ -7,7 +7,8 @@ namespace gibvk::vulkan::swapchains {
 		swapchainImageViews.resize(graphics::get()->getSwapchain().getSwapchainImages().size());
 
 		for (size_t i = 0; i < graphics::get()->getSwapchain().getSwapchainImages().size(); i++) {
-			swapchainImageViews.at(i) = graphics::get()->createImageView(graphics::get()->getSwapchain().getSwapchainImages().at(i), graphics::get()->getSwapchain().getSwapchainImageFormat(), vk::ImageAspectFlagBits::eColor);
+			swapchainImageViews.at(i) = graphics::get()->createImageView(graphics::get()->getSwapchain().getSwapchainImages().at(i), 
+				graphics::get()->getSwapchain().getSwapchainImageFormat(), vk::ImageAspectFlagBits::eColor, 1);
 		}
 	}
 

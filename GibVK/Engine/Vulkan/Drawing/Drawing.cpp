@@ -121,7 +121,7 @@ namespace gibvk::vulkan::drawing {
 
 				vertex.texCoord = {
 					attrib.texcoords[2 * index.texcoord_index + 0],
-					attrib.texcoords[2 * index.texcoord_index + 1]
+					1.0f - attrib.texcoords[2 * index.texcoord_index + 1]
 				};
 
 				vertex.color = { 1.0f, 1.0f, 1.0f };
@@ -266,10 +266,10 @@ namespace gibvk::vulkan::drawing {
 		return inFlightFences;
 	}
 
-	void createImage(uint32_t width, uint32_t height, vk::Format format, vk::ImageTiling tiling, vk::ImageUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Image& image, vk::DeviceMemory& imageMemory)
+	void createImage(uint32_t width, uint32_t height, uint32_t mipLevels, vk::Format format, vk::ImageTiling tiling, vk::ImageUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Image& image, vk::DeviceMemory& imageMemory)
 	{
 
-		auto imageInfo = vk::ImageCreateInfo({}, vk::ImageType::e2D, format, { width, height, 1 }, 1, 1, vk::SampleCountFlagBits::e1, tiling, usage, vk::SharingMode::eExclusive, 0, nullptr, vk::ImageLayout::eUndefined);
+		auto imageInfo = vk::ImageCreateInfo({}, vk::ImageType::e2D, format, { width, height, 1 }, mipLevels, 1, vk::SampleCountFlagBits::e1, tiling, usage, vk::SharingMode::eExclusive, 0, nullptr, vk::ImageLayout::eUndefined);
 
 		if (graphics::get()->getLogicalDevice().getLogicalDevice().createImage(&imageInfo, nullptr, &image) != vk::Result::eSuccess) {
 			throw std::runtime_error("Failed to create image!");
@@ -307,10 +307,11 @@ namespace gibvk::vulkan::drawing {
 		return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint;
 	}
 
-	void transitionImageLayout(vk::Image image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout) {
+	void transitionImageLayout(vk::Image image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout, uint32_t mipLevels) {
 		vk::CommandBuffer commandBuffer = renderer::buffers::beginSingleTimeCommands();
 
-		auto barrier = vk::ImageMemoryBarrier(vk::AccessFlagBits::eNoneKHR, vk::AccessFlagBits::eNoneKHR, oldLayout, newLayout, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, image, { vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1 });
+		auto barrier = vk::ImageMemoryBarrier(vk::AccessFlagBits::eNoneKHR, vk::AccessFlagBits::eNoneKHR, oldLayout, newLayout, 
+			VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, image, { vk::ImageAspectFlagBits::eColor, 0, mipLevels, 0, 1 });
 
 		vk::PipelineStageFlags sourceStage;
 		vk::PipelineStageFlags destinationStage;
