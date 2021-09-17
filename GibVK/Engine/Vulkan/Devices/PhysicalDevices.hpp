@@ -14,6 +14,8 @@ namespace gibvk::vulkan::devices {
 
 		bool checkDeviceExtensionSupport(vk::PhysicalDevice device);
 
+		vk::SampleCountFlagBits getMaxUsableSampleCount();
+
 		[[nodiscard]] const vk::PhysicalDevice& getPhysicalDevice() const;
 
 	private:

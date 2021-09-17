@@ -18,6 +18,7 @@ namespace gibvk::vulkan::devices {
 		for (const auto& device : physicalDevices) {
 			if (isDeviceSuitable(device)) {
 				physicalDevice = device;
+				graphics::msaaSamples = getMaxUsableSampleCount();
 				break;
 			}
 		}
@@ -60,6 +61,23 @@ namespace gibvk::vulkan::devices {
 		}
 
 		return requiredExtensions.empty();
+	}
+
+	vk::SampleCountFlagBits PhysicalDevices::getMaxUsableSampleCount()
+	{
+		vk::PhysicalDeviceProperties physicalDeviceProperties;
+		physicalDevice.getProperties(&physicalDeviceProperties);
+
+		vk::SampleCountFlags counts = physicalDeviceProperties.limits.framebufferColorSampleCounts & physicalDeviceProperties.limits.framebufferDepthSampleCounts;
+
+		if (counts & vk::SampleCountFlagBits::e64) { return vk::SampleCountFlagBits::e64; }
+		if (counts & vk::SampleCountFlagBits::e32) { return vk::SampleCountFlagBits::e32; }
+		if (counts & vk::SampleCountFlagBits::e16) { return vk::SampleCountFlagBits::e16; }
+		if (counts & vk::SampleCountFlagBits::e8) { return vk::SampleCountFlagBits::e8; }
+		if (counts & vk::SampleCountFlagBits::e4) { return vk::SampleCountFlagBits::e4; }
+		if (counts & vk::SampleCountFlagBits::e2) { return vk::SampleCountFlagBits::e2; }
+
+		return vk::SampleCountFlagBits::e1;
 	}
 
 	const vk::PhysicalDevice& PhysicalDevices::getPhysicalDevice() const

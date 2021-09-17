@@ -7,7 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <vulkan/vulkan.hpp>
 
-namespace gibvk::vulkan::drawing::depthresources {
+namespace gibvk::vulkan::drawing::resources {
 	class DepthResources {
 	public:
 		DepthResources();

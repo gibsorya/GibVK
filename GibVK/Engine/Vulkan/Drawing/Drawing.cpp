@@ -24,7 +24,8 @@ namespace gibvk::vulkan::drawing {
 	void Drawing::initialize()
 	{
 		commandPool = commandpools::createCommandPool();
-		depthResources = depthresources::createDepthResources();
+		colorResources = resources::createColorResources();
+		depthResources = resources::createDepthResources();
 		framebuffer = framebuffers::createFramebuffers();
 		textureImage = textureimages::createTextureImage();
 		textureImageView = textureimages::createTextureImageView();
@@ -38,7 +39,8 @@ namespace gibvk::vulkan::drawing {
 
 	void Drawing::recreateSwapchain()
 	{
-		depthResources = depthresources::createDepthResources();
+		colorResources = resources::createColorResources();
+		depthResources = resources::createDepthResources();
 		framebuffer = framebuffers::createFramebuffers();
 		renderer::get()->recreateSwapchain();
 		commandBuffer = commandbuffers::createCommandBuffer();
@@ -205,7 +207,7 @@ namespace gibvk::vulkan::drawing {
 		return *commandBuffer;
 	}
 
-	const textureimages::TextureImage& gibvk::vulkan::drawing::Drawing::getTextureImage() const
+	const textureimages::TextureImage& Drawing::getTextureImage() const
 	{
 		if (textureImage == nullptr) {
 			throw std::runtime_error("Texture image has not been initialized");
@@ -214,7 +216,7 @@ namespace gibvk::vulkan::drawing {
 		return *textureImage;
 	}
 
-	const textureimages::TextureImageView& gibvk::vulkan::drawing::Drawing::getTextureImageView() const
+	const textureimages::TextureImageView& Drawing::getTextureImageView() const
 	{
 		if (textureImageView == nullptr) {
 			throw std::runtime_error("Texture image view has not been initialized");
@@ -223,7 +225,7 @@ namespace gibvk::vulkan::drawing {
 		return *textureImageView;
 	}
 
-	const textureimages::TextureSampler& gibvk::vulkan::drawing::Drawing::getTextureSampler() const
+	const textureimages::TextureSampler& Drawing::getTextureSampler() const
 	{
 		if (textureSampler == nullptr) {
 			throw std::runtime_error("Texture sampler has not been initialized");
@@ -232,13 +234,22 @@ namespace gibvk::vulkan::drawing {
 		return *textureSampler;
 	}
 
-	const depthresources::DepthResources& gibvk::vulkan::drawing::Drawing::getDepthResources() const
+	const resources::DepthResources& Drawing::getDepthResources() const
 	{
 		if (depthResources == nullptr) {
 			throw std::runtime_error("Depth resources have not been initialized");
 		}
 
 		return *depthResources;
+	}
+
+	const resources::ColorResources& Drawing::getColorResources() const
+	{
+		if (colorResources == nullptr) {
+			throw std::runtime_error("Color resources have not been initialized");
+		}
+
+		return *colorResources;
 	}
 
 	const size_t& Drawing::getCurrentFrame() const
@@ -266,10 +277,10 @@ namespace gibvk::vulkan::drawing {
 		return inFlightFences;
 	}
 
-	void createImage(uint32_t width, uint32_t height, uint32_t mipLevels, vk::Format format, vk::ImageTiling tiling, vk::ImageUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Image& image, vk::DeviceMemory& imageMemory)
+	void createImage(uint32_t width, uint32_t height, uint32_t mipLevels, vk::SampleCountFlagBits numSamples, vk::Format format, vk::ImageTiling tiling, vk::ImageUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Image& image, vk::DeviceMemory& imageMemory)
 	{
 
-		auto imageInfo = vk::ImageCreateInfo({}, vk::ImageType::e2D, format, { width, height, 1 }, mipLevels, 1, vk::SampleCountFlagBits::e1, tiling, usage, vk::SharingMode::eExclusive, 0, nullptr, vk::ImageLayout::eUndefined);
+		auto imageInfo = vk::ImageCreateInfo({}, vk::ImageType::e2D, format, { width, height, 1 }, mipLevels, 1, numSamples, tiling, usage, vk::SharingMode::eExclusive, 0, nullptr, vk::ImageLayout::eUndefined);
 
 		if (graphics::get()->getLogicalDevice().getLogicalDevice().createImage(&imageInfo, nullptr, &image) != vk::Result::eSuccess) {
 			throw std::runtime_error("Failed to create image!");

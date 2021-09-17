@@ -4,6 +4,8 @@
 namespace gibvk::graphics {
 	std::unique_ptr<Graphics> Graphics::graphics = nullptr;
 
+	vk::SampleCountFlagBits msaaSamples = vk::SampleCountFlagBits::e1;
+
 	Graphics* Graphics::_get()
 	{
 		if (graphics == nullptr) {
@@ -77,6 +79,10 @@ namespace gibvk::graphics {
 		logicalDevice->getLogicalDevice().destroyImageView(vulkan::drawing::get()->getDepthResources().getDepthImageView());
 		logicalDevice->getLogicalDevice().destroyImage(vulkan::drawing::get()->getDepthResources().getDepthImage());
 		logicalDevice->getLogicalDevice().freeMemory(vulkan::drawing::get()->getDepthResources().getDepthImageMemory());
+
+		logicalDevice->getLogicalDevice().destroyImageView(vulkan::drawing::get()->getColorResources().getColorImageView());
+		logicalDevice->getLogicalDevice().destroyImage(vulkan::drawing::get()->getColorResources().getColorImage());
+		logicalDevice->getLogicalDevice().freeMemory(vulkan::drawing::get()->getColorResources().getColorImageMemory());
 
 		for (auto framebuffer : vulkan::drawing::get()->getFramebuffer().getSwapchainFramebuffers()) {
 			logicalDevice->getLogicalDevice().destroyFramebuffer(framebuffer);

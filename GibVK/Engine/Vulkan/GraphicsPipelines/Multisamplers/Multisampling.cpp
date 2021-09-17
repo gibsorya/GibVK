@@ -1,9 +1,10 @@
 #include "Multisampling.hpp"
+#include "../../../Graphics.hpp"
 
 namespace gibvk::vulkan::pipelines::multisampling {
 	Multisampling::Multisampling()
 	{
-		multisampling = vk::PipelineMultisampleStateCreateInfo({},vk::SampleCountFlagBits::e1, VK_FALSE, 1.0f, nullptr, VK_FALSE, VK_FALSE);
+		multisampling = vk::PipelineMultisampleStateCreateInfo({}, graphics::msaaSamples, VK_FALSE, 0.2f, nullptr, VK_FALSE, VK_FALSE);
 	}
 
 	const vk::PipelineMultisampleStateCreateInfo& Multisampling::getMultisampling() const

@@ -19,6 +19,7 @@ namespace gibvk::vulkan::devices {
 		
 		vk::PhysicalDeviceFeatures deviceFeatures{};
 		deviceFeatures.samplerAnisotropy = VK_TRUE;
+		deviceFeatures.sampleRateShading = VK_TRUE;
 
 		vk::DeviceCreateInfo createInfo({}, static_cast<uint32_t>(queueCreateInfos.size()), queueCreateInfos.data(), 0, nullptr, static_cast<uint32_t>(swapchains::deviceExtensions.size()), swapchains::deviceExtensions.data(), &deviceFeatures);
 		

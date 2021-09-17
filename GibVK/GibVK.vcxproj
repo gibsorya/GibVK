@@ -171,7 +171,7 @@
     <ClCompile Include="Engine\Vulkan\Devices\QueueFamilies.cpp" />
     <ClCompile Include="Engine\Vulkan\Drawing\CommandBuffers\CommandBuffer.cpp" />
     <ClCompile Include="Engine\Vulkan\Drawing\CommandPools\CommandPool.cpp" />
-    <ClCompile Include="Engine\Vulkan\Drawing\DepthResources\DepthResources.cpp" />
+    <ClCompile Include="Engine\Vulkan\Drawing\Resources\DepthResources.cpp" />
     <ClCompile Include="Engine\Vulkan\Drawing\Drawing.cpp" />
     <ClCompile Include="Engine\Vulkan\Drawing\Framebuffers\Framebuffer.cpp" />
     <ClCompile Include="Engine\Vulkan\GraphicsPipelines\ColorBlenders\ColorBlend.cpp" />
@@ -188,6 +188,7 @@
     <ClCompile Include="Engine\Vulkan\Queues\GraphicsQueue.cpp" />
     <ClCompile Include="Engine\Vulkan\Queues\PresentQueue.cpp" />
     <ClCompile Include="Engine\Vulkan\RenderPasses\RenderPass.cpp" />
+    <ClCompile Include="Engine\Vulkan\Drawing\Resources\ColorResources.cpp" />
     <ClCompile Include="Engine\Vulkan\Surface.cpp" />
     <ClCompile Include="Engine\Vulkan\Swapchains\ImageViews.cpp" />
     <ClCompile Include="Engine\Vulkan\Swapchains\Swapchain.cpp" />
@@ -213,7 +214,7 @@
     <ClInclude Include="Engine\Vulkan\Devices\QueueFamilies.hpp" />
     <ClInclude Include="Engine\Vulkan\Drawing\CommandBuffers\CommandBuffer.hpp" />
     <ClInclude Include="Engine\Vulkan\Drawing\CommandPools\CommandPool.hpp" />
-    <ClInclude Include="Engine\Vulkan\Drawing\DepthResources\DepthResources.hpp" />
+    <ClInclude Include="Engine\Vulkan\Drawing\Resources\DepthResources.hpp" />
     <ClInclude Include="Engine\Vulkan\Drawing\Drawing.hpp" />
     <ClInclude Include="Engine\Vulkan\Drawing\Framebuffers\Framebuffer.hpp" />
     <ClInclude Include="Engine\Vulkan\GraphicsPipelines\ColorBlenders\ColorBlend.hpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="Engine\Vulkan\Queues\GraphicsQueue.hpp" />
     <ClInclude Include="Engine\Vulkan\Queues\PresentQueue.hpp" />
     <ClInclude Include="Engine\Vulkan\RenderPasses\RenderPass.hpp" />
+    <ClInclude Include="Engine\Vulkan\Drawing\Resources\ColorResources.hpp" />
     <ClInclude Include="Engine\Vulkan\Surface.hpp" />
     <ClInclude Include="Engine\Vulkan\Swapchains\ImageViews.hpp" />
     <ClInclude Include="Engine\Vulkan\Swapchains\Swapchain.hpp" />
