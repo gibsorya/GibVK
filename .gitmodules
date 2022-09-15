@@ -1,0 +1,24 @@
+[submodule "VKGuide/external/sdl"]
+    path = VKGuide/external/sdl
+    url = https://github.com/libsdl-org/SDL.git
+[submodule "VKGuide/external/volk"]
+	path = VKGuide/external/volk
+	url = https://github.com/zeux/volk
+[submodule "VKGuide/external/tinyobjloader"]
+	path = VKGuide/external/tinyobjloader
+	url = https://github.com/tinyobjloader/tinyobjloader
+[submodule "VKGuide/external/imgui"]
+	path = VKGuide/external/imgui
+	url = https://github.com/ocornut/imgui
+[submodule "VKGuide/external/stb"]
+	path = VKGuide/external/stb
+	url = https://github.com/nothings/stb
+[submodule "VKGuide/external/glm"]
+	path = VKGuide/external/glm
+	url = https://github.com/g-truc/glm
+[submodule "VKGuide/external/vma"]
+    path = VKGuide/external/vma
+    url = git@github.com:GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
+[submodule "VKGuide/external/vk-bootstrap"]
+    path = VKGuide/external/vk-bootstrap
+    url = https://github.com/charles-lunarg/vk-bootstrap
