@@ -7,9 +7,6 @@
 [submodule "VKGuide/external/tinyobjloader"]
 	path = VKGuide/external/tinyobjloader
 	url = https://github.com/tinyobjloader/tinyobjloader
-[submodule "VKGuide/external/imgui"]
-	path = VKGuide/external/imgui
-	url = https://github.com/ocornut/imgui
 [submodule "VKGuide/external/stb"]
 	path = VKGuide/external/stb
 	url = https://github.com/nothings/stb
@@ -19,6 +16,6 @@
 [submodule "VKGuide/external/vma"]
 	path = VKGuide/external/vma
 	url = git@github.com:GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
-[submodule "VKGuide/external/vk-bootstrap"]
-	path = VKGuide/external/vk-bootstrap
+[submodule "VKGuide/external/vkbootstrap"]
+	path = VKGuide/external/vkbootstrap
 	url = https://github.com/charles-lunarg/vk-bootstrap
