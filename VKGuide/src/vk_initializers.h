@@ -15,4 +15,11 @@ namespace vkinit
 	VkRenderPassBeginInfo renderPassBeginInfo(VkRenderPass renderPass, VkExtent2D extent, VkFramebuffer framebuffer);
 	VkSubmitInfo submitInfo(VkCommandBuffer* cmd);
 	VkPresentInfoKHR presentInfo();
+	VkPipelineShaderStageCreateInfo pipelineShaderStageCreateInfo(VkShaderStageFlagBits stage, VkShaderModule shaderModule);
+	VkPipelineVertexInputStateCreateInfo vertexInputStateCreateInfo();
+	VkPipelineInputAssemblyStateCreateInfo inputAssemblyCreateInfo(VkPrimitiveTopology topology);
+	VkPipelineRasterizationStateCreateInfo rasterizationStateCreateInfo(VkPolygonMode mode);
+	VkPipelineMultisampleStateCreateInfo multisampleCreateInfo();
+	VkPipelineColorBlendAttachmentState colorBlendAttachmentState();
+	VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo();
 }
