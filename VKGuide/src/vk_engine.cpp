@@ -67,6 +67,7 @@ void VulkanEngine::cleanup()
 
 		vkDestroyPipelineLayout(_device, _pipelineLayout, nullptr);
 		vkDestroyPipeline(_device, _trianglePipeline, nullptr);
+		vkDestroyPipeline(_device, _redTrianglePipeline, nullptr);
 
 		for(int i = 0; i < _frameBuffers.size(); i++)
 		{
@@ -121,7 +122,15 @@ void VulkanEngine::draw()
 	rpInfo.pClearValues = &clearValue;
 	vkCmdBeginRenderPass(cmd, &rpInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-	vkCmdBindPipeline(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, _trianglePipeline);
+	if(_selectedShader == 0)
+	{
+		vkCmdBindPipeline(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, _trianglePipeline);
+	}
+	else
+	{
+		vkCmdBindPipeline(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, _redTrianglePipeline);
+	}
+
 	vkCmdDraw(cmd, 3, 1, 0, 0);
 
 	vkCmdEndRenderPass(cmd);
@@ -160,8 +169,22 @@ void VulkanEngine::run()
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
-			//close the window when user alt-f4s or clicks the X button			
-			if (e.type == SDL_QUIT) bQuit = true;
+			// close the window when user alt-f4s or clicks the X button
+			if (e.type == SDL_QUIT)
+			{
+				bQuit = true;
+			}
+			else if (e.type == SDL_KEYDOWN)
+			{
+				if (e.key.keysym.sym == SDLK_SPACE)
+				{
+					_selectedShader += 1;
+					if (_selectedShader > 1)
+					{
+						_selectedShader = 0;
+					}
+				}
+			}
 		}
 
 		draw();
@@ -303,7 +326,7 @@ void VulkanEngine::init_sync_objects()
 void VulkanEngine::init_pipelines()
 {
 	VkShaderModule triangleFragShader;
-	if (!load_shader_module("../shaders/triangle.frag.spv", &triangleFragShader))
+	if (!load_shader_module("../shaders/colored_triangle.frag.spv", &triangleFragShader))
 	{
 		std::cout << "Error when building the triangle fragment shader module" << std::endl;
 	}
@@ -312,7 +335,26 @@ void VulkanEngine::init_pipelines()
 	}
 
 	VkShaderModule triangleVertexShader;
-	if (!load_shader_module("../shaders/triangle.vert.spv", &triangleVertexShader))
+	if (!load_shader_module("../shaders/colored_triangle.vert.spv", &triangleVertexShader))
+	{
+		std::cout << "Error when building the triangle vertex shader module" << std::endl;
+
+	}
+	else {
+		std::cout << "Triangle vertex shader successfully loaded" << std::endl;
+	}
+
+	VkShaderModule redTriangleFragShader;
+	if (!load_shader_module("../shaders/triangle.frag.spv", &redTriangleFragShader))
+	{
+		std::cout << "Error when building the triangle fragment shader module" << std::endl;
+	}
+	else {
+		std::cout << "Triangle fragment shader successfully loaded" << std::endl;
+	}
+
+	VkShaderModule redTriangleVertexShader;
+	if (!load_shader_module("../shaders/triangle.vert.spv", &redTriangleVertexShader))
 	{
 		std::cout << "Error when building the triangle vertex shader module" << std::endl;
 
@@ -344,8 +386,16 @@ void VulkanEngine::init_pipelines()
 
 	_trianglePipeline = pipelineBuilder.build_pipeline(_device, _renderPass);
 
+	pipelineBuilder._shaderStages.clear();
+	pipelineBuilder._shaderStages.push_back(vkinit::pipelineShaderStageCreateInfo(VK_SHADER_STAGE_VERTEX_BIT, redTriangleVertexShader));
+	pipelineBuilder._shaderStages.push_back(vkinit::pipelineShaderStageCreateInfo(VK_SHADER_STAGE_FRAGMENT_BIT, redTriangleFragShader));
+
+	_redTrianglePipeline = pipelineBuilder.build_pipeline(_device, _renderPass);
+
 	vkDestroyShaderModule(_device, triangleVertexShader, nullptr);
 	vkDestroyShaderModule(_device, triangleFragShader, nullptr);
+	vkDestroyShaderModule(_device, redTriangleVertexShader, nullptr);
+	vkDestroyShaderModule(_device, redTriangleFragShader, nullptr);
 }
 
 bool VulkanEngine::load_shader_module(const char* filePath, VkShaderModule* outShaderModule)
