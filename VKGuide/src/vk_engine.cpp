@@ -207,7 +207,7 @@ void VulkanEngine::init_vulkan()
 
 	vkb::PhysicalDeviceSelector phys_device_selector(vkb_instance);
 
-	auto phys_device_selector_return = phys_device_selector.set_surface(_surface).add_required_extension({VK_KHR_SWAPCHAIN_EXTENSION_NAME}).select();
+	auto phys_device_selector_return = phys_device_selector.set_surface(_surface).set_minimum_version(1, 1).add_required_extension({VK_KHR_SWAPCHAIN_EXTENSION_NAME}).select();
 	if (!phys_device_selector_return){
 		std::cerr << "Failed to find Physical Device. Error: " << phys_device_selector_return.error().message() << std::endl;
 	}
