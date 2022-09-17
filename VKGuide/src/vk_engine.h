@@ -8,6 +8,31 @@
 class VulkanEngine {
 public:
 
+	VkInstance _instance;
+	VkDebugUtilsMessengerEXT _debugMessenger;
+	VkPhysicalDevice _physicalDevice;
+	VkDevice _device;
+
+	uint32_t _graphicsFamily;
+	uint32_t _presentFamily;
+	VkQueue _graphicsQueue;
+
+	VkCommandPool _commandPool;
+	VkCommandBuffer _commandBuffer;
+
+	std::vector<VkFramebuffer> _frameBuffers;
+	VkRenderPass _renderPass;
+
+	VkSurfaceKHR _surface;
+	VkSwapchainKHR _swapchain;
+	VkFormat _swapchainImageFormat;
+	std::vector<VkImage> _swapchainImages;
+	std::vector<VkImageView> _swapchainImageViews;
+
+	VkFence _renderFence;
+	VkSemaphore _presentSemaphore;
+	VkSemaphore _renderSemaphore;
+
 	bool _isInitialized{ false };
 	int _frameNumber {0};
 
@@ -26,4 +51,20 @@ public:
 
 	//run main loop
 	void run();
+
+private:
+	//Vulkan initializers
+	void init_vulkan();
+
+	void init_swapchain();
+
+	void init_commands();
+
+	void init_renderpass();
+
+	void init_default_renderpass();
+
+	void init_framebuffers();
+
+	void init_sync_objects();
 };

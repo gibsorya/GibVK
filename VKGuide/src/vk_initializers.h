@@ -5,8 +5,14 @@
 
 #include <vk_types.h>
 
-namespace vkinit {
-
-	//vulkan init code goes here
+namespace vkinit
+{
+	VkCommandPoolCreateInfo commandPoolCreateInfo(uint32_t queueFamilyIndex, VkCommandPoolCreateFlags flags = 0);
+	VkCommandBufferAllocateInfo commandBufferAllocateInfo(VkCommandPool pool, uint32_t count = 1, VkCommandBufferLevel level = VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+	VkRenderPassCreateInfo renderPassCreateInfo();
+	VkFramebufferCreateInfo framebufferCreateInfo(VkRenderPass renderPass, VkExtent2D extent);
+	VkCommandBufferBeginInfo commandBufferBeginInfo(VkCommandBufferUsageFlags flags = 0);
+	VkRenderPassBeginInfo renderPassBeginInfo(VkRenderPass renderPass, VkExtent2D extent, VkFramebuffer framebuffer);
+	VkSubmitInfo submitInfo(VkCommandBuffer* cmd);
+	VkPresentInfoKHR presentInfo();
 }
-
