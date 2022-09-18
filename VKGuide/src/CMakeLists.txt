@@ -6,7 +6,9 @@ add_executable(VKGuide
     vk_engine.h
     vk_types.h
     vk_initializers.cpp
-    vk_initializers.h)
+    vk_initializers.h
+    vk_mesh.h
+    vk_mesh.cpp)
 
 
 set_property(TARGET VKGuide PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:VKGuide>")

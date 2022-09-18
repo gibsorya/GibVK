@@ -17,7 +17,7 @@ target_include_directories(vkbootstrap PUBLIC vkbootstrap/src)
 target_link_libraries(vkbootstrap PUBLIC Vulkan::Vulkan $<$<BOOL:UNIX>:${CMAKE_DL_LIBS}>)
 
 #both vma and glm and header only libs so we only need the include path
-target_include_directories(vma INTERFACE vma)
+target_include_directories(vma INTERFACE vma/include)
 target_include_directories(glm INTERFACE glm)
 
 target_sources(tinyobjloader PRIVATE 

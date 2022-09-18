@@ -63,7 +63,7 @@ namespace vkinit
         return info;
     }
 
-    VkSubmitInfo submitInfo(VkCommandBuffer* cmd)
+    VkSubmitInfo submitInfo(VkCommandBuffer *cmd)
     {
         VkSubmitInfo info = {};
         info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -107,24 +107,26 @@ namespace vkinit
         return info;
     }
 
-    VkPipelineVertexInputStateCreateInfo vertexInputStateCreateInfo() {
-            VkPipelineVertexInputStateCreateInfo info = {};
-            info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-            info.pNext = nullptr;
+    VkPipelineVertexInputStateCreateInfo vertexInputStateCreateInfo()
+    {
+        VkPipelineVertexInputStateCreateInfo info = {};
+        info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+        info.pNext = nullptr;
 
-            //no vertex bindings or attributes
-            info.vertexBindingDescriptionCount = 0;
-            info.vertexAttributeDescriptionCount = 0;
-            return info;
+        // no vertex bindings or attributes
+        info.vertexBindingDescriptionCount = 0;
+        info.vertexAttributeDescriptionCount = 0;
+        return info;
     }
 
-    VkPipelineInputAssemblyStateCreateInfo inputAssemblyCreateInfo(VkPrimitiveTopology topology) {
+    VkPipelineInputAssemblyStateCreateInfo inputAssemblyCreateInfo(VkPrimitiveTopology topology)
+    {
         VkPipelineInputAssemblyStateCreateInfo info = {};
         info.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
         info.pNext = nullptr;
 
         info.topology = topology;
-        //we are not going to use primitive restart on the entire tutorial so leave it on false
+        // we are not going to use primitive restart on the entire tutorial so leave it on false
         info.primitiveRestartEnable = VK_FALSE;
         return info;
     }
@@ -168,8 +170,8 @@ namespace vkinit
     {
         VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
         colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
-			VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-		colorBlendAttachment.blendEnable = VK_FALSE;
+                                              VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+        colorBlendAttachment.blendEnable = VK_FALSE;
 
         return colorBlendAttachment;
     }
@@ -180,10 +182,10 @@ namespace vkinit
         info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
         info.pNext = nullptr;
         info.flags = 0;
-		info.setLayoutCount = 0;
-		info.pSetLayouts = nullptr;
-		info.pushConstantRangeCount = 0;
-		info.pPushConstantRanges = nullptr;
+        info.setLayoutCount = 0;
+        info.pSetLayouts = nullptr;
+        info.pushConstantRangeCount = 0;
+        info.pPushConstantRanges = nullptr;
 
         return info;
     }
@@ -204,5 +206,60 @@ namespace vkinit
         semCreateInfo.pNext = nullptr;
         semCreateInfo.flags = flags;
         return semCreateInfo;
+    }
+
+    VkImageCreateInfo imageCreateInfo(VkFormat format, VkImageUsageFlags usageFlags, VkExtent3D extent)
+    {
+        VkImageCreateInfo info = {};
+        info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+        info.pNext = nullptr;
+
+        info.imageType = VK_IMAGE_TYPE_2D;
+
+        info.format = format;
+        info.extent = extent;
+
+        info.mipLevels = 1;
+        info.arrayLayers = 1;
+        info.samples = VK_SAMPLE_COUNT_1_BIT;
+        info.tiling = VK_IMAGE_TILING_OPTIMAL;
+        info.usage = usageFlags;
+
+        return info;
+    }
+    VkImageViewCreateInfo imageViewCreateInfo(VkFormat format, VkImage image, VkImageAspectFlags aspectFlags)
+    {
+        // build a image-view for the depth image to use for rendering
+        VkImageViewCreateInfo info = {};
+        info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        info.pNext = nullptr;
+
+        info.viewType = VK_IMAGE_VIEW_TYPE_2D;
+        info.image = image;
+        info.format = format;
+        info.subresourceRange.baseMipLevel = 0;
+        info.subresourceRange.levelCount = 1;
+        info.subresourceRange.baseArrayLayer = 0;
+        info.subresourceRange.layerCount = 1;
+        info.subresourceRange.aspectMask = aspectFlags;
+
+        return info;
+    }
+
+    VkPipelineDepthStencilStateCreateInfo depthStencilCreateInfo(bool bDepthTest, bool bDepthWrite, VkCompareOp compareOp)
+    {
+        VkPipelineDepthStencilStateCreateInfo info = {};
+        info.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+        info.pNext = nullptr;
+
+        info.depthTestEnable = bDepthTest ? VK_TRUE : VK_FALSE;
+        info.depthWriteEnable = bDepthWrite ? VK_TRUE : VK_FALSE;
+        info.depthCompareOp = bDepthTest ? compareOp : VK_COMPARE_OP_ALWAYS;
+        info.depthBoundsTestEnable = VK_FALSE;
+        info.minDepthBounds = 0.0f; // Optional
+        info.maxDepthBounds = 1.0f; // Optional
+        info.stencilTestEnable = VK_FALSE;
+
+        return info;
     }
 }
