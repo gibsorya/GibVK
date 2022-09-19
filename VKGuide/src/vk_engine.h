@@ -9,6 +9,21 @@
 #include <deque>
 #include <vk_mesh.h>
 #include <glm/glm.hpp>
+#include <unordered_map>
+#include <string>
+
+struct Material {
+	VkPipeline pipeline;
+	VkPipelineLayout pipelineLayout;
+};
+
+struct RenderObject {
+	Mesh* mesh;
+
+	Material* material;
+
+	glm::mat4 transformMatrix;
+};
 
 struct MeshPushConstants {
 	glm::vec4 data;
@@ -76,6 +91,11 @@ public:
 	AllocatedImage _depthImage;
 	VkFormat _depthFormat;
 
+	std::vector<RenderObject> _renderables;
+
+	std::unordered_map<std::string,Material> _materials;
+	std::unordered_map<std::string,Mesh> _meshes;
+
 	bool _isInitialized{ false };
 	int _frameNumber {0};
 	int _selectedShader{ 0 };
@@ -122,8 +142,20 @@ private:
 
 	void init_vertex_buffer();
 
+	void init_scene();
+
 	void load_meshes();
 	void upload_mesh(Mesh& mesh);
+	Material* create_material(VkPipeline pipeline, VkPipelineLayout layout,const std::string& name);
+
+	//returns nullptr if it can't be found
+	Material* get_material(const std::string& name);
+
+	//returns nullptr if it can't be found
+	Mesh* get_mesh(const std::string& name);
+
+	//our draw function
+	void draw_objects(VkCommandBuffer cmd,RenderObject* first, int count);
 };
 
 class PipelineBuilder {
