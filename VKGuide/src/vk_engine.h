@@ -110,10 +110,10 @@ public:
 
 	bool _isInitialized{ false };
 	int _frameNumber {0};
-	int _selectedShader{ 0 };
-	int _horizontal{0};
-	int _vertical{0};
-	int _zed{0};
+	float _selectedShader{ 0 };
+	float _horizontal{0};
+	float _vertical{0};
+	float _zed{0};
 	glm::vec3 camPos = { 0.f,0.f,-2.f };
 
 	VkExtent2D _windowExtent{ 1700 , 900 };

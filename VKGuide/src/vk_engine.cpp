@@ -149,61 +149,69 @@ void VulkanEngine::run()
 		while (SDL_PollEvent(&e) != 0)
 		{
 			// close the window when user alt-f4s or clicks the X button
-			if (e.type == SDL_QUIT)
+			switch (e.type)
 			{
+			case SDL_QUIT:
 				bQuit = true;
-			}
-			else if (e.type == SDL_KEYDOWN)
-			{
-				if (e.key.keysym.sym == SDLK_SPACE)
+				break;
+			case SDL_KEYDOWN:
+				switch (e.key.keysym.sym)
 				{
-					_selectedShader += 1;
-					if (_selectedShader > 1)
-					{
-						_selectedShader = 0;
-					}
-					_zed = 1;
+				case SDLK_SPACE:
+					_zed = 1.0f;
+					break;
+				case SDLK_LCTRL:
+					_zed = -1.0f;
+					break;
+				case SDLK_w:
+					_vertical = 1.0f;
+					break;
+				case SDLK_s:
+					_vertical = -1.0f;
+					break;
+				case SDLK_a:
+					_horizontal = -1.0f;
+					break;
+				case SDLK_d:
+					_horizontal = 1.0f;
+					break;
+				default:
+					break;
 				}
-
-				if(e.key.keysym.sym == SDLK_LCTRL)
+				break;
+			case SDL_KEYUP:
+				switch (e.key.keysym.sym)
 				{
-					_zed = -1;
+				case SDLK_SPACE:
+					if (_zed > 0)
+						_zed = 0.0f;
+					break;
+				case SDLK_LCTRL:
+					if (_zed < 0)
+						_zed = 0.0f;
+					break;
+				case SDLK_w:
+					if (_vertical > 0)
+						_vertical = 0.0f;
+					break;
+				case SDLK_s:
+					if (_vertical < 0)
+						_vertical = 0.0f;
+					break;
+				case SDLK_a:
+					if (_horizontal < 0)
+						_horizontal = 0.0f;
+					break;
+				case SDLK_d:
+					if (_horizontal > 0)
+						_horizontal = 0.0f;
+					break;
+				default:
+					break;
 				}
-
-				if (e.key.keysym.sym == SDLK_w)
-				{
-					_vertical = 1;
-				}
-
-				if (e.key.keysym.sym == SDLK_s)
-				{
-					_vertical = -1;
-				}
-
-				if (e.key.keysym.sym == SDLK_a)
-				{
-					_horizontal = -1;
-				}
-				
-				if (e.key.keysym.sym == SDLK_d)
-				{
-					_horizontal = 1;
-				}
-			} 
-			else if (e.type == SDL_KEYUP) 
-			{
-				if (_horizontal != 0)
-				{
-					_horizontal = 0;
-				}
-				else if (_vertical != 0)
-				{
-					_vertical = 0;
-				}
-				else if (_zed != 0)
-				{
-					_zed = 0;
-				}
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -310,7 +318,7 @@ void VulkanEngine::init_swapchain()
 	VkImageCreateInfo dimg_info = vkinit::imageCreateInfo(_depthFormat, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, depthImageExtent);
 
 	VmaAllocationCreateInfo dimg_allocinfo = {};
-	dimg_allocinfo.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+	dimg_allocinfo.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 	dimg_allocinfo.requiredFlags = VkMemoryPropertyFlags(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 	vmaCreateImage(_allocator, &dimg_info, &dimg_allocinfo, &_depthImage._image, &_depthImage._allocation, nullptr);
@@ -739,18 +747,9 @@ FrameData& VulkanEngine::get_current_frame()
 
 void VulkanEngine::draw_objects(VkCommandBuffer cmd,RenderObject* first, int count)
 {
-	if (_horizontal != 0)
-	{
-		camPos.x -= _horizontal * 0.15f;
-	}
-	else if (_vertical != 0)
-	{
-		camPos.z += _vertical * 0.15f;
-	}
-	else if (_zed != 0)
-	{
-		camPos.y -= _zed * 0.15f;
-	}
+	camPos.x -= _horizontal * 0.15f;
+	camPos.z += _vertical * 0.15f;
+	camPos.y -= _zed * 0.15f;
 
 	glm::mat4 view = glm::translate(glm::mat4(1.f), camPos);
 	//camera projection
