@@ -82,15 +82,15 @@ void VulkanEngine::draw()
 	if (SDL_GetWindowFlags(_window) & SDL_WINDOW_MINIMIZED)
 		return;
 
-	vkWaitForFences(_device, 1, &_renderFence, true, UINT64_MAX);
-	vkResetFences(_device, 1, &_renderFence);
+	vkWaitForFences(_device, 1, &get_current_frame()._renderFence, true, UINT64_MAX);
+	vkResetFences(_device, 1, &get_current_frame()._renderFence);
 
-	VK_CHECK(vkResetCommandBuffer(_commandBuffer, 0));
+	VK_CHECK(vkResetCommandBuffer(get_current_frame()._mainCommandBuffer, 0));
 
 	uint32_t swapchainImageIndex;
-	VK_CHECK(vkAcquireNextImageKHR(_device, _swapchain, UINT64_MAX, _presentSemaphore, nullptr, &swapchainImageIndex));
+	VK_CHECK(vkAcquireNextImageKHR(_device, _swapchain, UINT64_MAX, get_current_frame()._presentSemaphore, nullptr, &swapchainImageIndex));
 	
-	VkCommandBuffer cmd = _commandBuffer;
+	VkCommandBuffer cmd = get_current_frame()._mainCommandBuffer;
 
 	VkCommandBufferBeginInfo beginInfo = vkinit::commandBufferBeginInfo(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 
@@ -120,16 +120,16 @@ void VulkanEngine::draw()
 	submit.pWaitDstStageMask = &waitStage;
 	submit.waitSemaphoreCount = 1;
 	submit.signalSemaphoreCount = 1;
-	submit.pSignalSemaphores = &_renderSemaphore;
-	submit.pWaitSemaphores = &_presentSemaphore;
+	submit.pSignalSemaphores = &get_current_frame()._renderSemaphore;
+	submit.pWaitSemaphores = &get_current_frame()._presentSemaphore;
 
-	VK_CHECK(vkQueueSubmit(_graphicsQueue, 1, &submit, _renderFence));
+	VK_CHECK(vkQueueSubmit(_graphicsQueue, 1, &submit, get_current_frame()._renderFence));
 
 	VkPresentInfoKHR presentInfo = vkinit::presentInfo();
 	presentInfo.swapchainCount = 1;
 	presentInfo.pSwapchains = &_swapchain;
 	presentInfo.waitSemaphoreCount = 1;
-	presentInfo.pWaitSemaphores = &_renderSemaphore;
+	presentInfo.pWaitSemaphores = &get_current_frame()._renderSemaphore;
 	presentInfo.pImageIndices = &swapchainImageIndex;
 
 	VK_CHECK(vkQueuePresentKHR(_graphicsQueue, &presentInfo));
@@ -329,15 +329,18 @@ void VulkanEngine::init_commands()
 {
 	VkCommandPoolCreateInfo cmdCreateInfo = vkinit::commandPoolCreateInfo(_graphicsFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT);
 	
-	VK_CHECK(vkCreateCommandPool(_device, &cmdCreateInfo, nullptr, &_commandPool));
+	for(int i = 0; i < FRAME_OVERLAP; i++)
+	{
+		VK_CHECK(vkCreateCommandPool(_device, &cmdCreateInfo, nullptr, &_frames[i]._commandPool));
 
-	VkCommandBufferAllocateInfo allocInfo = vkinit::commandBufferAllocateInfo(_commandPool);
+		VkCommandBufferAllocateInfo allocInfo = vkinit::commandBufferAllocateInfo(_frames[i]._commandPool, 1);
 
-	VK_CHECK(vkAllocateCommandBuffers(_device, &allocInfo, &_commandBuffer));
+		VK_CHECK(vkAllocateCommandBuffers(_device, &allocInfo, &_frames[i]._mainCommandBuffer));
 
-	_mainDeletionQueue.push_function([=, *this]() {
-		vkDestroyCommandPool(_device, _commandPool, nullptr);
-	});
+		_mainDeletionQueue.push_function([=, *this]() {
+			vkDestroyCommandPool(_device,  _frames[i]._commandPool, nullptr);
+		});
+	}
 }
 
 void VulkanEngine::init_renderpass()
@@ -445,19 +448,21 @@ void VulkanEngine::init_framebuffers()
 void VulkanEngine::init_sync_objects()
 {
 	VkSemaphoreCreateInfo semCreateInfo = vkinit::semaphoreCreateInfo();
-
-	VK_CHECK(vkCreateSemaphore(_device, &semCreateInfo, nullptr, &_presentSemaphore));
-	VK_CHECK(vkCreateSemaphore(_device, &semCreateInfo, nullptr, &_renderSemaphore));
-
 	VkFenceCreateInfo fenceCreateInfo = vkinit::fenceCreateInfo(VK_FENCE_CREATE_SIGNALED_BIT);
 
-	VK_CHECK(vkCreateFence(_device, &fenceCreateInfo, nullptr, &_renderFence));
+	for(int i = 0; i < FRAME_OVERLAP; i++)
+	{
+		VK_CHECK(vkCreateSemaphore(_device, &semCreateInfo, nullptr, &_frames[i]._presentSemaphore));
+		VK_CHECK(vkCreateSemaphore(_device, &semCreateInfo, nullptr,  &_frames[i]._renderSemaphore));
 
-	_mainDeletionQueue.push_function([=, *this]() {
-		vkDestroyFence(_device, _renderFence, nullptr);
-        vkDestroySemaphore(_device, _presentSemaphore, nullptr);
-        vkDestroySemaphore(_device, _renderSemaphore, nullptr);
-    });
+		VK_CHECK(vkCreateFence(_device, &fenceCreateInfo, nullptr, &_frames[i]._renderFence));
+
+		_mainDeletionQueue.push_function([=, *this]() {
+			vkDestroyFence(_device, _frames[i]._renderFence, nullptr);
+			vkDestroySemaphore(_device, _frames[i]._presentSemaphore, nullptr);
+			vkDestroySemaphore(_device, _frames[i]._renderSemaphore, nullptr);
+    	});
+	}
 }
 
 void VulkanEngine::init_pipelines()
@@ -724,6 +729,11 @@ Mesh* VulkanEngine::get_mesh(const std::string& name)
 	else {
 		return &(*it).second;
 	}
+}
+
+FrameData& VulkanEngine::get_current_frame()
+{
+	return _frames[_frameNumber % FRAME_OVERLAP];
 }
 
 

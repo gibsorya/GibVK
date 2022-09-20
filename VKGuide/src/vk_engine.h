@@ -30,6 +30,14 @@ struct MeshPushConstants {
 	glm::mat4 render_matrix;
 };
 
+struct FrameData {
+	VkSemaphore _presentSemaphore, _renderSemaphore;
+	VkFence _renderFence;	
+
+	VkCommandPool _commandPool;
+	VkCommandBuffer _mainCommandBuffer;
+};
+
 struct DeletionQueue
 {
 	std::deque<std::function<void()>> deletors;
@@ -47,6 +55,8 @@ struct DeletionQueue
 		deletors.clear();
 	}
 };
+
+constexpr unsigned int FRAME_OVERLAP = 2;
 
 class VulkanEngine {
 public:
@@ -96,6 +106,8 @@ public:
 	std::unordered_map<std::string,Material> _materials;
 	std::unordered_map<std::string,Mesh> _meshes;
 
+	FrameData _frames[FRAME_OVERLAP];
+
 	bool _isInitialized{ false };
 	int _frameNumber {0};
 	int _selectedShader{ 0 };
@@ -143,6 +155,8 @@ private:
 	void init_vertex_buffer();
 
 	void init_scene();
+
+	FrameData& get_current_frame();
 
 	void load_meshes();
 	void upload_mesh(Mesh& mesh);
