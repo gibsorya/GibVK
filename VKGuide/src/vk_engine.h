@@ -36,6 +36,25 @@ struct FrameData {
 
 	VkCommandPool _commandPool;
 	VkCommandBuffer _mainCommandBuffer;
+
+	//buffer that holds a single GPUCameraData to use when rendering
+	AllocatedBuffer cameraBuffer;
+
+	VkDescriptorSet globalDescriptor;
+};
+
+struct GPUCameraData{
+	glm::mat4 view;
+	glm::mat4 proj;
+	glm::mat4 viewproj;
+};
+
+struct GPUSceneData {
+	glm::vec4 fogColor; // w is for exponent
+	glm::vec4 fogDistances; //x for min, y for max, zw unused.
+	glm::vec4 ambientColor;
+	glm::vec4 sunlightDirection; //w for sun power
+	glm::vec4 sunlightColor;
 };
 
 struct DeletionQueue
@@ -60,8 +79,15 @@ constexpr unsigned int FRAME_OVERLAP = 2;
 
 class VulkanEngine {
 public:
+	VkPhysicalDeviceProperties _gpuProperties;
 	DeletionQueue _mainDeletionQueue;
 	VmaAllocator _allocator;
+
+	GPUSceneData _sceneParameters;
+	AllocatedBuffer _sceneParameterBuffer;
+
+	VkDescriptorSetLayout _globalSetLayout;
+	VkDescriptorPool _descriptorPool;
 
 	VkInstance _instance;
 	VkDebugUtilsMessengerEXT _debugMessenger;
@@ -170,6 +196,11 @@ private:
 
 	//our draw function
 	void draw_objects(VkCommandBuffer cmd,RenderObject* first, int count);
+
+	AllocatedBuffer create_buffer(size_t allocSize, VkBufferUsageFlags usage, VmaMemoryUsage memoryUsage);
+	void init_descriptors();
+
+	size_t pad_uniform_buffer_size(size_t originalSize);
 };
 
 class PipelineBuilder {
